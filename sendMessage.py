@@ -124,6 +124,7 @@ class sendMessage():
             self.lastMessage = message
           except:
             print("Nachricht konnte weder editiert,entfernt oder gesendet werden")
+      time.sleep(self.sleepTime)
     else:
       try:
         self.bot.delete_message(self.chatID,self.messageID)
