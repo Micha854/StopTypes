@@ -1,147 +1,126 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import time
 import telebot
-message_rocket = ""
-message_lockmodul = ""
+import time
+
 class sendMessage():
-  counter = 0
-  lastMessage = ""
-  messageID = 0
+  filename = ""
+  oldBossMessage = ""
+  oldBossMessage2 = ""
+  oldoverviewMessage = ""
+  oldoverviewMessage2= ""
   chatID = 0
-  sleepTime = 0
-  maxCounter = 0
+  bossid = 0
+  overviewid = 0
+  overviewid2= 0
   bot = ""
-  def sendMessageFull(self,create):
-    message = create.message
-    if len(self.lastMessage) == len(message):
-      time.sleep(self.sleepTime)
-    else:
-      if (len(self.lastMessage) <= len(create.message_lockmodul)) or (self.counter >= self.maxCounter):
+  messageID = 0
+  list_output = []
+  list_message_ID = []
+  list_boss_output = []
+  list_boss_message_ID = []
+
+  def setConfig(self,token,chatID,filename):
+    self.chatID = chatID
+    self.bot = telebot.TeleBot(token)
+    self.filename = filename
+
+
+  def singleStops(self,bolt_line,name,latitude,longitude,typ):
+    id = self.bot.send_venue(self.chatID,latitude,longitude,bolt_line,name,disable_notification=True)
+    if typ > 40 and typ < 45:
+      self.list_boss_output.append(name)
+      self.list_boss_message_ID.append(id.message_id)
+      outF = open(self.filename +"boss-output.txt","w")
+      outF.writelines(str(self.list_boss_message_ID))
+      outF.close()
+      return id.message_id
+    self.list_output.append(name)
+    self.list_message_ID.append(id.message_id)
+    outF = open(self.filename +"output.txt","w")
+    outF.writelines(str(self.list_message_ID))
+    outF.close()
+    return id.message_id
+    
+
+  def sendBoss(self,message,message2):
+    if self.oldBossMessage == message and self.oldBossMessage2 == message2:
+      return self.bossid
+    if len(message) > 5:
+      try:
+        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
+        self.oldBossMessage = message
+        if len(message2) > 5:
+          id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.bossid-1, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
+          self.oldBossMessage2 = message2
+        self.bossid = id.message_id
+        return self.bossid
+      except:
+        print("ID nicht gefunden")
+    try:
+      self.bot.delete_message(self.chatID,self.bossid)
+      if len(message2) > 5:
+        self.bot.delete_message(self.chatID,self.bossid-1)
+    except:
+      print("Nichts zu entfernen")
+    if message == "":
+      message = "Aktuell keine Bosse vorhanden"
+      self.oldBossMessage = ""
+      id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      self.bossid = id.message_id 
+      return self.bossid
+    id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+    if(message2):
+      id = self.bot.send_message(self.chatID, message2, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      self.oldBossMessage2 = message2
+    self.oldBossMessage = message
+    self.bossid = id.message_id
+    return self.bossid
+
+
+  def sendOverview(self,message,message2):
+    if self.oldoverviewMessage == message and self.oldoverviewMessage2 == message2:
+      return
+    try:  
+      self.bot.delete_message(self.chatID,self.overviewid)
+      self.bot.delete_message(self.chatID,self.overviewid-1)
+    except:
+      print("Nichts zu entfernen")
+    id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+    if(message2):
+      id = self.bot.send_message(self.chatID, message2, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      self.overviewid2 = id.message_id
+      self.oldoverviewMessage2 = message2
+    
+    self.overviewid = id.message_id
+    self.oldoverviewMessage = message
+
+
+  def clearOutputList(self,encounter):
+    i = 0
+    print("Checke Outputliste\n")
+    for name in self.list_output:
+      if not encounter.__contains__(name):
         try:
-          self.bot.delete_message(self.chatID,self.messageID)
-          id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-          self.messageID = id.message_id
-          self.counter = 0
+          print("Entferne Nachricht")
+          self.bot.delete_message(self.chatID,self.list_message_ID[i])
+          self.list_message_ID.__delitem__(i)
+          self.list_output.__delitem__(i)
         except:
           print("Nachricht konnte nicht entfernt werden")
-          try:
-            id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-            self.messageID = id.message_id
-            self.counter = 0
-          except:
-            print("Nachricht konnte weder entfernt noch neu versendet werden")
-        self.lastMessage = message	
-        time.sleep(self.sleepTime)
-      else:
+      i +=1
+    outF = open(self.filename +"output.txt","w")
+    outF.writelines(str(self.list_message_ID))
+    outF.close()
+    i = 0
+    for name in self.list_boss_output:
+      if not encounter.__contains__(name):
         try:
-          id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.messageID, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
-          self.messageID = id.message_id
-          self.lastMessage = message
+          print("Entferne Nachricht")
+          self.bot.delete_message(self.chatID,self.list_boss_message_ID[i])
+          self.list_boss_message_ID.__delitem__(i)
+          self.list_boss_output.__delitem__(i)
         except:
-          try:
-            self.bot.delete_message(self.chatId,self.messageID) 
-            id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-            self.counter = 0
-            self.messageID = id.message_id
-            self.lastMessage = message
-          except:
-            print("Nachricht konnte weder editiert noch entfernt werden, versuche zu senden")
-            try:
-              id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-              self.counter = 0
-              self.messageID= id.message_id
-              self.lastMessage = message
-            except:
-              print("Nachricht konnte weder editiert,entfernt oder gesendet werden")
-      self.counter +=1	
-      time.sleep(self.sleepTime)
-
-  def sendMessageRocket(self,message):
-    if len(self.lastMessage) == len(message):
-      time.sleep(self.sleepTime)
-    else:
-      if self.counter >= self.maxCounter:
-        try:
-          self.bot.delete_message(self.chatID,self.messageID)
-          id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-          self.counter = 0
-          self.messageID = id.message_id
-          self.lastMessage = message
-        except:
-          print("Nachricht konnte nicht entfernt werden, versuche zu senden")
-          try:
-            id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-            self.counter = 0
-            self.messageID = id.message_id
-            self.lastMessage = message
-          except:
-            print("Nachricht konnte weder editiert,entfernt oder gesendet werden")
-      else:
-        try:
-          id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.messageID, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
-          self.messageID = id.message_id
-          self.lastMessage = message
-        except:
-          try:
-            self.bot.delete_message(self.chatId,self.messageID) 
-            id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-            self.counter = 0
-            self.messageID = id.message_id
-            self.lastMessage = message
-          except:
-            print("Nachricht konnte weder editiert noch entfernt werden, versuche zu senden")
-            try:
-              id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-              self.counter = 0
-              self.messageID= id.message_id
-              self.lastMessage = message
-            except:
-              print("Nachricht konnte weder editiert,entfernt oder gesendet werden")
-      self.counter +=1	
-      time.sleep(self.sleepTime)
-
-  def sendMessageLockmodul(self,message):
-
-    if len(self.lastMessage) == len(message):
-      time.sleep(self.sleepTime)
-    elif len(self.lastMessage) >= len(message):
-      try:
-        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.messageID, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
-        self.messageID = id.message_id
-        self.lastMessage = message
-      except:
-        try:
-          self.bot.delete_message(self.chatId,self.messageID) 
-          id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-          self.messageID = id.message_id
-          self.lastMessage = message
-        except:
-          print("Nachricht konnte weder editiert noch entfernt werden, versuche zu senden")
-          try:
-            id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-            self.messageID= id.message_id
-            self.lastMessage = message
-          except:
-            print("Nachricht konnte weder editiert,entfernt oder gesendet werden")
-      time.sleep(self.sleepTime)
-    else:
-      try:
-        self.bot.delete_message(self.chatID,self.messageID)
-        id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-        self.messageID = id.message_id
-      except:
-        print("Nachricht konnte nicht entfernt werden")
-        try:
-          id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-          self.messageID = id.message_id
-        except:
-          print("Nachricht konnte weder entfernt noch neu versendet werden")
-      self.lastMessage = message	
-      time.sleep(self.sleepTime)
-
-  def setConfig(self,token,chatID,sleepTime,maxCounter):
-    self.chatID = chatID
-    self.sleepTime = int(sleepTime)
-    self.maxCounter = int(maxCounter)
-    self.bot = telebot.TeleBot(token)
+          print("Nachricht konnte nicht entfernt werden")
+      i +=1
+    outF = open("boss-output.txt","w")
+    outF.writelines(str(self.list_boss_message_ID))
+    outF.close()

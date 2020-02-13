@@ -1,82 +1,122 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import helper
 import stopType
-import time
+import datetime
+
 
 class createMessage():
-  message_rocket = ""
-  message_lockmodul = ""
-  message_overview_rocket = ""
-  message_overview_lockmodul = ""
   message = ""
-  def create(self,Sql,typ,hours):
+  message2= ""
+  def create(self,send,sql,verlinkung):
     Help = helper.Helper()
-    StopTyp = stopType.stopType()
+    stop = stopType.stopType()
+    i = 0
+    j = 0
+    message = ""
+    message2= ""
+    boss_message = send.oldBossMessage
+    boss_message2= send.oldBossMessage2
+    changed = True
+    print("ANzahl namen: "+str(len(sql.name)))
+    for name in sql.name:
+      if send.list_output.__contains__(name):
+        f = open(send.filename+"output.txt", "r")
+            # Split the string based on space delimiter 
+        list_string = f.read()
+        list_string = list_string[1:len(list_string)-1]
+        f.close()
+        list_string = list_string.split(', ') 
+        zeit = sql.incident_expiration[i]
+        zeit = zeit + datetime.timedelta(hours=1)
+        typ = stop.getType(sql.incident_grunt_type[i])
+        id = list_string[send.list_output.index(name)]
+        if len(message) > 5000:
+          message2 += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + " | "+ "<a href='"+ verlinkung + str(id) + "'>" + str(name) + "</a>" + "\n"
+          message = message
+        else:
+          message += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + " | "+ "<a href='"+ verlinkung + str(id) + "'>" + str(name) + "</a>" + "\n"
+        i +=1
+      elif send.list_boss_output.__contains__(name):
+        j +=1
+        i +=1
+      else:
+        stopName = sql.name[i]
+        latitude = sql.latitude[i]
+        longitude = sql.longitude[i]
+        typ = stop.getType(sql.incident_grunt_type[i])
+        zeit = sql.incident_expiration[i]
+        zeit = zeit + datetime.timedelta(hours=1)
+
+        bolt_line = typ + " \u23F1 Ende " + str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute)))
+
+        id = send.singleStops(bolt_line,stopName,latitude,longitude,sql.incident_grunt_type[i])
+        if sql.incident_grunt_type[i] > 40 and sql.incident_grunt_type[i] < 45:
+          if len(boss_message) > 5000:
+            boss_message2 += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + "| " + "<a href='"+verlinkung + str(id) + "'>" + str(stopName) + "</a>" + "\n"
+            boss_message = boss_message
+          else:
+            boss_message += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + "| " + "<a href='"+verlinkung + str(id) + "'>" + str(stopName) + "</a>" + "\n"
+          j +=1
+        else:
+          #message += '\U0001f4cd'+ "<a href='https://t.me/TraunsteinTeamRocket/" + str(id) + "'>" + stopName + "</a>" + "\n" + "  \U00002514 Ende " + str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " | " + typ + "\n"
+          if len(message) > 5000:
+            message2 += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + " | "+ "<a href='"+verlinkung + str(id) + "'>" + str(stopName) + "</a>" + "\n"
+            message = message
+          else:
+            message += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " |" +str(typ) + " | "+ "<a href='"+verlinkung + str(id) + "'>" + str(stopName) + "</a>" + "\n"
+        i +=1
     
-    #Aufteilung des Ergebnisses aus der MySQL-Abfrage in Listen
-    list_name = Help.split_string(Sql.name[2:len(Sql.name)-3])
-    list_latitude = Help.split_string(Sql.latitude[2:len(Sql.latitude)-3])
-    list_longitude = Help.split_string(Sql.longitude[2:len(Sql.longitude)-3])
-    list_type = Help.split_string(Sql.typ[2:len(Sql.typ)-3])
-    list_time = Help.split_string_time(Sql.zeit)
-    i = 0	#Parameter i geht die einzelnen einträge durch
-    j = 1	#Parameter j geht die list_time durch, da diese Liste anders aufgebaut ist
-    run = len(list_name)
-    #Iteration durch alle Einträge
-    if len(str(list_name)) == 4:
-      if typ == "rocket":
-        self.message_rocket = "Aktuell keine Rocketstops"
-        run = 0 
-      elif typ == "lockmodul":
-        self.message_lockmodul = "Z\U000000fcnd doch welche"
-        run = 0
-    if run == 1:
-      list_name = Help.split_string(Sql.name[2:len(Sql.name)-4])
-      list_latitude = Help.split_string(Sql.latitude[2:len(Sql.latitude)-4])
-      list_longitude = Help.split_string(Sql.longitude[2:len(Sql.longitude)-4])
-      list_type = Help.split_string(Sql.typ[2:len(Sql.typ)-4])
+    len_message = len(message)
+    len_boss = len(boss_message)
+    len_message2 = len(message2)
+    len_boss2 = len(boss_message2)
 
-    while i < run:
-      try:
-        pokestopName = list_name[i]
-        pokestopLatitude = list_latitude[i]
-        pokestopLongitude = list_longitude[i]
-        pokestopTyp = StopTyp.getType(int(list_type[i]))
-        zeit = list_time[j]
-      except:
-        print("Index out of range! Generiere Nachricht neu")
-        return self.create(Sql,typ,hours)	
-      pokestopName = pokestopName[1:len(pokestopName)-1] 		
-      pokestopLatitude = pokestopLatitude[0:10]		
-      pokestopLongitude = pokestopLongitude[0:10]	
+    print("Wert j: "+ str(j))
+    print("Wert Liste:" + str(send.list_boss_output.__len__()))
+    
+    print(" Boss msg 1: (" + str(len_boss) + " characters --------------------------------------------------------------)\n\n" + boss_message)
+    print(" Boss msg 2: (" + str(len_boss2) + " characters -------------------------------------------------------------)\n\n" + boss_message2)
+    print("RÃ¼pel msg 1: (" + str(len_message) + " characters -----------------------------------------------------------)\n\n" + message)
+    print("RÃ¼pel msg 2: (" + str(len_message2) + " characters ----------------------------------------------------------)\n\n" + message2)
+    
 
-      #Zeitangabe zusammenbauen aus einzelnen einträgen        
-      Newtime = Help.split_string_stunden(zeit)
-      stunden = (int(Newtime[3]) + int(hours)) % 24
-      minute = Newtime[4]
-      minute = minute[1:len(minute)]
-      minute = str(minute)
-      minute = Help.split_string_minuten(minute)
-      minute = Help.nice_time(str(minute[0]))
+    if j == send.list_boss_output.__len__():
+      changed = False
+    if changed:
+      boss_message = self.list_boss(send,sql,verlinkung)
+    bossid = send.sendBoss(boss_message, boss_message2)
+    message_overview_rocket ="Aktuell " + str(i-j) + " Team Rocket Stops: \n\n" + stop.Skanto + stop.Srelaxo + stop.Sgestein + stop.Seis +stop.Sgeist + stop.Selektro +stop.Sfee + stop.Sstahl + stop.Sunlicht+ stop.Skaefer + stop.Sfeuer + stop.Sdrache + stop.Skampf + stop.Sflug + stop.Spflanze + stop.Sboden + stop.Snormal + stop.Sgift + stop.Spsycho + stop.Swasser + stop.Skarpador + "\n\n"
 
-      message_location = '\U0001f4cd'+ "<a href='https://maps.google.de/?q=" + pokestopLatitude + "," + pokestopLongitude +"'" + ">" +  pokestopName + "</a>" + "\n"
-      message_time = " " +'\U0001f55b' + " Ende " + str(stunden) + ":" + minute + " "  + "\n\n"
+    
 
-      if typ == "rocket":
-        message_type = pokestopTyp
-        self.message_rocket += message_location + message_type + message_time
-      elif typ == "lockmodul":
-        message_type = pokestopTyp
-        self.message_lockmodul += message_location + message_type + message_time
+    if(j > 0):
+      if len(message2) > 5:
+        message2 += "\n <a href='"+verlinkung + str(bossid) + "'" + ">" + "Hier" + " gehts zu den Bossen</a>"
+      else:
+        message += "\n <a href='"+verlinkung + str(bossid) + "'" + ">" + "Hier" + " gehts zu den Bossen</a>"
+    else:
+      message += "\n <b>Aktuell keine Bosse vorhanden</b>"
 
-      j +=1
+    send.sendOverview(message_overview_rocket + message, message2)
+
+  def list_boss(self,send,sql,verlinkung):
+    boss_message = ""
+    boss_message2= ""
+    Help = helper.Helper()
+    stop = stopType.stopType()
+    i = 0
+    for name in sql.name:
+      if send.list_boss_output.__contains__(name):
+        f = open(send.filename+"boss-output.txt", "r")
+              # Split the string based on space delimiter 
+        list_string = f.read()
+        list_string = list_string[1:len(list_string)-1]
+        f.close()
+        list_string = list_string.split(', ') 
+        zeit = sql.incident_expiration[i]
+        zeit = zeit + datetime.timedelta(hours=1)
+        typ = stop.getType(sql.incident_grunt_type[i])
+        id = list_string[send.list_boss_output.index(name)]
+        boss_message += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute)))+ " |"  +str(typ) + "| " + "<a href='"+verlinkung + str(id) + "'>" + str(name) + "</a>" + "\n"
+        boss_message2 += str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute)))+ " |"  +str(typ) + "| " + "<a href='"+verlinkung + str(id) + "'>" + str(name) + "</a>" + "\n"
       i +=1
-    if typ == "rocket":
-      self.message_overview_rocket ="Aktuell " + str(run) + " Rocket Stops: \n\n" + StopTyp.Skanto + StopTyp.Srelaxo + StopTyp.Sgestein + StopTyp.Seis +StopTyp.Sgeist + StopTyp.Selektro +StopTyp.Sfee + StopTyp.Sstahl + StopTyp.Sunlicht+ StopTyp.Skaefer + StopTyp.Sfeuer + StopTyp.Sdrache + StopTyp.Skampf + StopTyp.Sflug + StopTyp.Spflanze + StopTyp.Sboden + StopTyp.Snormal + StopTyp.Sgift + StopTyp.Spsycho + StopTyp.Swasser + StopTyp.Skarpador + "\n\n"
-    elif typ == "lockmodul":
-      self.message_overview_lockmodul ="Aktuell " + str(run) + " Lockmodule: \n\n" + StopTyp.Snormal + StopTyp.Sgletscher + StopTyp.Smoos + StopTyp.Smagnet + "\n\n"
-
-    ####Erstellung der finalen Nachricht
-    self.message = self.message_overview_rocket + self.message_rocket + self.message_overview_lockmodul + self.message_lockmodul
+    return boss_message + boss_message2
