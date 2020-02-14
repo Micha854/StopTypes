@@ -23,7 +23,38 @@ class stopType():
   geist = 0
   unlicht = 0
   fee = 0
-  boss = 0
+  cliff = 0
+  arlo = 0
+  sierra = 0
+  giovanni = 0
+#  boss = 0
+
+  Efeuer = ""
+  Ekanto = ""
+  Erelaxo = ""
+  Ekaefer = ""
+  Edrache = ""
+  Ekampf = ""
+  Eflug = ""
+  Epflanze = ""
+  Eboden = ""
+  Enormal = ""
+  Egift = ""
+  Epsycho = ""
+  Egestein = ""
+  Ewasser = ""
+  Ekarpador = ""
+  Eeis = ""
+  Eelektro = ""
+  Estahl = ""
+  Egeist = ""
+  Eunlicht = ""
+  Efee = ""
+  Ecliff = ""
+  Earlo = ""
+  Esierra = ""
+  Egiovanni = ""
+#  Eboss = ""
 
   Sfeuer = ""
   Skanto = ""
@@ -46,139 +77,299 @@ class stopType():
   Sgeist = ""
   Sunlicht = ""
   Sfee = ""
-  Sboss = ""
+  Scliff = ""
+  Sarlo = ""
+  Ssierra = ""
+  Sgiovanni = ""
+#  Sboss = ""
+
+  Tfeuer = ""
+  Tkanto = ""
+  Trelaxo = ""
+  Tkaefer = ""
+  Tdrache = ""
+  Tkampf = ""
+  Tflug = ""
+  Tpflanze = ""
+  Tboden = ""
+  Tnormal = ""
+  Tgift = ""
+  Tpsycho = ""
+  Tgestein = ""
+  Twasser = ""
+  Tkarpador = ""
+  Teis = ""
+  Telektro = ""
+  Tstahl = ""
+  Tgeist = ""
+  Tunlicht = ""
+  Tfee = ""
+  Tcliff = ""
+  Tarlo = ""
+  Tsierra = ""
+  Tgiovanni = ""
+#  Tboss = ""
 
   standard = 0
   gletscher = 0
   moos = 0
   magnet = 0
 
+  Estandard = ""
+  Egletscher = ""
+  Emoos = ""
+  Emagnet = ""
+
   Sstandard = ""
   Sgletscher = ""
   Smoos = ""
   Smagnet = ""
 
+  Tstandard = ""
+  Tgletscher = ""
+  Tmoos = ""
+  Tmagnet = ""
+
+#  Emoji = ""
+#  Infotext = ""
+
     ####Rocketstops
   def typ4(self):
     self.kanto +=1
-    self.Skanto = "\U00002b55 " + str(self.kanto) + " "
-    return " \U00002b55 Kanto Starter"
+    self.Ekanto ="\U0001f3c1"
+    self.Skanto = self.Ekanto + " " + str(self.kanto) + " "
+    self.Tkanto = "Kanto Starter"
+    self.Emoji = self.Ekanto
+    self.Infotext = self.Tkanto
+    return self.Emoji + self.Infotext
   def typ5(self):
     self.relaxo +=1
-    self.Srelaxo ="\U0001f6cf " + str(self.relaxo) + " "
-    return " \U0001f6cf Relaxo"
+    self.Erelaxo = "\U0001f6cc"
+    self.Srelaxo = self.Erelaxo + " " + str(self.relaxo) + " "
+    self.Trelaxo = "Relaxo"
+    self.Emoji = self.Erelaxo
+    self.Infotext = self.Trelaxo
+    return self.Emoji + self.Infotext
   def typ7(self):
     self.kaefer +=1
-    self.Skaefer ="\U0001f41B " + str(self.kaefer) + " "
-    return " \U0001f41B K\U000000e4fer"
+    self.Ekaefer = "\U0001F41E"
+    self.Skaefer = self.Ekaefer + " " + str(self.kaefer) + " "
+    self.Tkaefer = "K\U000000e4fer ... Los mein Super K\U000000e4fer"
+    self.Emoji = self.Ekaefer
+    self.Infotext = self.Tkaefer
+    return self.Emoji + self.Infotext
   def typ12(self):
     self.drache +=1
-    self.Sdrache ="\U0001f409 " + str(self.drache) + " "
-    return " \U0001f409 Drache"
+    self.Edrache = "\U0001f432"
+    self.Sdrache = self.Edrache + " " + str(self.drache) + " "
+    self.Tdrache = "Drache ... Gut gebr\U000000fcllt ist halb gewonnen"
+    self.Emoji = self.Edrache
+    self.Infotext = self.Tdrache
+    return self.Emoji + self.Infotext
   def typ16(self):
     self.kampf +=1
-    self.Skampf ="\U0001f94a " + str(self.kampf) + " "
-    return " \U0001f94a Kampf"
+    self.Ekampf = "\U0001f94a"
+    self.Skampf = self.Ekampf + " " + str(self.kampf) + " "
+    self.Tkampf = "Kampf ... dient nur der Show"
+    self.Emoji = self.Ekampf
+    self.Infotext = self.Tkampf
+    return self.Emoji + self.Infotext
   def typ18(self):
     self.feuer +=1
-    self.Sfeuer ="\U0001f525 " + str(self.feuer) + " "
-    return " \U0001f525 Feuer"
+    self.Efeuer = "\U0001f525"
+    self.Sfeuer = self.Efeuer + " " + str(self.feuer) + " "
+    self.Tfeuer = "Feuer ... Feueratem eines Pokemon"
+    self.Emoji = self.Efeuer
+    self.Infotext = self.Tfeuer
+    return self.Emoji + self.Infotext
   def typ20(self):
     self.flug +=1
-    self.Sflug ="\U0001f985 " + str(self.flug) + " "
-    return " \U0001f985 Flug"
+    self.Eflug = "\U0001f426"
+    self.Sflug = self.Eflug + " " + str(self.flug) + " "
+    self.Tflug = "Flug ... Mein Vogel Pokemon will"
+    self.Emoji = self.Eflug
+    self.Infotext = self.Tflug
+    return self.Emoji + self.Infotext
   def typ23(self):
     self.pflanze +=1
-    self.Spflanze ="\U0001f33f " + str(self.pflanze) + " "
-    return " \U0001f33f Pflanze"
+    self.Epflanze = "\U0001f33f"
+    self.Spflanze = self.Epflanze + " " + str(self.pflanze) + " "
+    self.Tpflanze = "Pflanze ... nicht gut Beeren essen"
+    self.Emoji = self.Epflanze
+    self.Infotext = self.Tpflanze
+    return self.Emoji + self.Infotext
   def typ25(self):
     self.boden +=1
-    self.Sboden ="\U0001f5fb " + str(self.boden) + " "
-    return " \U0001f5fb Boden"
+    self.Eboden = "\U0001f5fb"
+    self.Sboden = self.Eboden + " " + str(self.boden) + " "
+    self.Tboden = "Boden ... in den Boden stampfen"
+    self.Emoji = self.Eboden
+    self.Infotext = self.Tboden
+    return self.Emoji + self.Infotext
   def typ31(self):
     self.normal +=1
-    self.Snormal ="\U0001f401 "+ str(self.normal) + " "
-    return " \U0001f401 Normal"
+    self.Enormal = "\U0001f518"
+    self.Snormal = self.Enormal + " " + str(self.normal) + " "
+    self.Tnormal = "Normal ... noch lange nicht schwach"
+    self.Emoji = self.Enormal
+    self.Infotext = self.Tnormal
+    return self.Emoji + self.Infotext
   def typ32(self):
     self.gift +=1
-    self.Sgift ="\U0001f577 " + str(self.gift) + " "
-    return " \U0001f577 Gift"
+    self.Egift = "\U0001f40d"
+    self.Sgift = self.Egift + " " + str(self.gift) + " "
+    self.Tgift = "Gift ... Gift drauf nehmen"
+    self.Emoji = self.Egift
+    self.Infotext = self.Tgift
+    return self.Emoji + self.Infotext
   def typ35(self):
     self.psycho +=1
-    self.Spsycho ="\U0001f52e " + str(self.psycho) + " "
-    return " \U0001f52e Psycho"
+    self.Epsycho = "\U0001f52e"
+    self.Spsycho = self.Epsycho + " " + str(self.psycho) + " "
+    self.Tpsycho = "Psycho ... unsichtbaren Kr\U000000e4ften"
+    self.Emoji = self.Epsycho
+    self.Infotext = self.Tpsycho
+    return self.Emoji + self.Infotext
   def typ37(self):
     self.gestein +=1
-    self.Sgestein ="\U0001f311 "+ str(self.gestein) + " "
-    return " \U0001f311 Gestein"
+    self.Egestein = "\U0001f9f1"
+    self.Sgestein = self.Egestein + " " + str(self.gestein) + " "
+    self.Tgestein = "Gestein ... Bringen wir den Stein ins Rollen"
+    self.Emoji = self.Egestein
+    self.Infotext = self.Tgestein
+    return self.Emoji + self.Infotext
   def typ38(self):
     self.wasser +=1
-    self.Swasser ="\U0001f4a7 " + str(self.wasser) + " "
-    return " \U0001f4a7 Wasser"
+    self.Ewasser = "\U0001f4a7"
+    self.Swasser = self.Ewasser + " " + str(self.wasser) + " "
+    self.Twasser = "Wasser ... Gew\U000000e4sser sind tr\U000000fcgerisch"
+    self.Emoji = self.Ewasser
+    self.Infotext = self.Twasser
+    return self.Emoji + self.Infotext
   def typ39(self):
     self.karpador +=1
-    self.Skarpador ="\U0001f420 " + str(self.karpador) + " "
-    return " \U0001f420 Karpador"
+    self.Ekarpador = "\U0001f420"
+    self.Skarpador = self.Ekarpador + " " + str(self.karpador) + " "
+    self.Tkarpador = "Karpador"
+    self.Emoji = self.Ekarpador
+    self.Infotext = self.Tkarpador
+    return self.Emoji + self.Infotext
   def typ49(self):
     self.elektro +=1
-    self.Selektro ="\U000026a1 "+ str(self.elektro) + " "
-    return " \U000026a1 Elektro"
+    self.Eelektro = "\U000026a1"
+    self.Selektro = self.Eelektro + " " + str(self.elektro) + " "
+    self.Telektro = "Elektro ... Du wirst schockiert sein"
+    self.Emoji = self.Eelektro
+    self.Infotext = self.Telektro
+    return self.Emoji + self.Infotext
   def typ48(self):
     self.geist +=1
-    self.Sgeist  ="\U0001f47b "+ str(self.geist) + " "
-    return " \U0001f47b Geist"
+    self.Egeist  = "\U0001f47b"
+    self.Sgeist  = self.Egeist + " " + str(self.geist) + " "
+    self.Tgeist = "Geist ... Buhu ... Buhuhu"
+    self.Emoji = self.Egeist
+    self.Infotext = self.Tgeist
+    return self.Emoji + self.Infotext
   def typ97(self):
     self.fee +=1
-    self.Sfee  ="\U0001f496 "+ str(self.fee) + " "
-    return " \U0001f496 Fee"
+    self.Efee  = "\U0001f311"
+    self.Sfee  = self.Efee + " "+ str(self.fee) + " "
+    self.Tfee = "Fee ... Wie niedlich mein Pokemon ist"
+    self.Emoji = self.Efee
+    self.Infotext = self.Tfee
+    return self.Emoji + self.Infotext
   def typ98(self):
     self.stahl +=1
-    self.Sstahl  ="\U00002699 "+ str(self.stahl)  + " "
-    return " \U00002699 Stahl"
+    self.Estahl  = "\U0001f311"
+    self.Sstahl  = self.Estahl + " " + str(self.stahl) + " "
+    self.Tstahl =  "Stahl ... Gegen meinen eisernen Willen"
+    self.Emoji = self.Estahl
+    self.Infotext = self.Tstahl
+    return self.Emoji + self.Infotext
   def typ99(self):
     self.unlicht +=1
-    self.Sunlicht   ="\U0001f317 "+ str(self.unlicht)  + " "
-    return " \U0001f317 Unlicht"
+    self.Eunlicht = "\U0001f311"
+    self.Sunlicht = self.Eunlicht + " " + str(self.unlicht) + " "
+    self.Tunlicht = "Unlicht ... Wo Licht ist, da ist auch Schatten"
+    self.Emoji = self.Eunlicht
+    self.Infotext = self.Tunlicht
+    return self.Emoji + self.Infotext
   def typ26(self):
     self.eis +=1
-    self.Seis  ="\U00002744  "+ str(self.eis)  + " "
-    return " \U00002744 Eis"
+    self.Eeis = "\U00002744"
+    self.Seis = self.Eeis + " " + str(self.eis) + " "
+    self.Teis = "Eis ... Du bewegst dich auf d\U000000fcnnen Eis"
+    self.Emoji = self.Eeis
+    self.Infotext = self.Teis
+    return self.Emoji + self.Infotext
 
-  ####Boose
+  ####Bosse
   def typ41(self):
-    self.boss +=1
-    self.Sboss ="\U0001f63a "+str(self.boss) + " " 
-    return " \U0001f63a Cliff "
+    self.cliff +=1
+    self.Ecliff = "\U0001f63a"
+    self.Scliff = self.Ecliff + " " + str(self.cliff) + " "
+    self.Tcliff = "Team Leader Cliff"
+    self.Emoji = self.Ecliff
+    self.Infotext = self.Tcliff
+    return self.Emoji + self.Infotext
   def typ42(self):
-    self.boss +=1
-    self.Sboss ="\U0001f997 "+str(self.boss) + " " 
-    return " \U0001f997 Arlo "
+    self.arlo +=1
+    self.Earlo = "\U0001f997"
+    self.Sarlo = self.Earlo + " " + str(self.arlo) + " "
+    self.Tarlo = "Team Leader Arlo"
+    self.Emoji = self.Earlo
+    self.Infotext = self.Tarlo
+    return self.Emoji + self.Infotext
   def typ43(self):
-    self.boss +=1
-    self.Sboss ="\U00002603 "+str(self.boss) + " " 
-    return " \U00002603 Sierra "
+    self.sierra +=1
+    self.Esierra = "\U00002603"
+    self.Ssierra = self.Esierra + " " + str(self.sierra) + " "
+    self.Tsierra = "Team Leader Sierra"
+    self.Emoji = self.Esierra
+    self.Infotext = self.Tsierra
+    return self.Emoji + self.Infotext
   def typ44(self):
-    self.boss +=1
-    self.Sboss ="\U0001f454 "+str(self.boss) + " "
-    return " \U0001f454 Giovanni\U00002753"
+    self.giovanni +=1
+    self.Egiovanni = "\U0001f454"
+    self.Sgiovanni = self.Egiovanni + " " + str(self.giovanni) + " "
+    self.Tgiovanni = "Rocket Boss Giovanni"
+    self.Emoji = self.Egiovanni
+    self.Infotext = self.Tgiovanni
+    return self.Emoji + self.Infotext
 
   ####Lockmodule
   def typ501(self):
     self.standard +=1
-    self.Sstandard = "\U0001F39F " + str(self.standard)
-    return "\U0001F39F Normales Lockmodul"
+    self.Estandard = "\U0001F39F"
+    self.Sstandard = self.Estandard + " " + str(self.standard) + " "
+    self.Tstandard = "Normales Lockmodul"
+    self.Emoji = self.Estandard
+    self.Infotext = self.Tstandard
+    return self.Emoji + self.Infotext
   def typ502(self):
     self.gletscher +=1
-    self.Sgletscher = "\U00002744 " + str(self.gletscher)
-    return "\U00002744 Gletscher Lockmodul"
+    self.Egletscher = "\U00002744"
+    self.Sgletscher = self.Egletscher + " " + str(self.gletscher) + " "
+    self.Tgletscher = "Gletscher Lockmodul"
+    self.Emoji = self.Egletscher
+    self.Infotext = self.Tgletscher
+    return self.Emoji + self.Infotext
   def typ503(self):
     self.moos +=1
-    self.Smoos = "\U0001f4c3 " + str(self.moos)
-    return "\U0001f4c3 Moos Lockmodul"
+    self.Emoos = "\U0001f33f"
+    self.Smoos = self.Emoos + " " + str(self.moos) + " "
+    self.Tmoos = "Moos Lockmodul"
+    self.Emoji = self.Emoos
+    self.Infotext = self.Tmoos
+    return self.Emoji + self.Infotext
   def typ504(self):
     self.magnet +=1
-    self.Smagnet = "\U0001F9F2 " + str(self.magnet)
-    return "\U0001F9F2 Magnet Lockmodul"
+    self.Emagnet = "\U0001F9F2"
+    self.Smagnet = self.Emagnet + " " + str(self.magnet) + " "
+    self.Tmagnet = "Magnet Lockmodul"
+    self.Emoji = self.Emagnet
+    self.Infotext = self.Tmagnet
+    return self.Emoji + self.Infotext
 
   def getType(self,value):
     switch = {

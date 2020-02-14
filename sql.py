@@ -7,8 +7,13 @@ class Sql():
   incident_grunt_type = []
   longitude = []
   latitude = []
+  Lname = []
+  Lincident_expiration = []
+  Lincident_grunt_type = []
+  Llongitude = []
+  Llatitude = []
 
-  def startSQL(self,cfg):
+  def rocketSQL(self,cfg,abfrage):
     #Verbindungsaufbau zur MySQL-Datenbank
     try:
       connection = MySQLdb.connect(host=cfg.host,db=cfg.database,user=cfg.user, passwd=cfg.password)
@@ -23,7 +28,7 @@ class Sql():
     self.longitude.clear()
     self.latitude.clear()
 
-    Mysqlall = cursor.execute("SELECT name,latitude,longitude,incident_grunt_type,incident_expiration FROM pokestop where longitude BETWEEN " + cfg.min_longitude + " AND " + cfg.max_longitude + " AND latitude BETWEEN " + cfg.min_latitude + " AND " + cfg.max_latitude + " AND timestampdiff(SECOND,incident_expiration,NOW())<3600 ORDER BY incident_expiration,name")
+    Mysqlall = cursor.execute(abfrage)
     all = cursor.fetchall()
 
     i = 0
@@ -33,6 +38,36 @@ class Sql():
       self.longitude.append(all[i][2])
       self.incident_grunt_type.append(all[i][3])
       self.incident_expiration.append(all[i][4])
+      i +=1
+
+    cursor = cursor.close()
+    connection.close()
+
+  def lockmodulSQL(self,cfg,abfrage):
+    #Verbindungsaufbau zur MySQL-Datenbank
+    try:
+      connection = MySQLdb.connect(host=cfg.host,db=cfg.database,user=cfg.user, passwd=cfg.password)
+      cursor = connection.cursor()
+    except:
+      print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
+      time.sleep(15)
+      return self.startSQL(cfg)
+    self.Lname.clear()
+    self.Lincident_grunt_type.clear()
+    self.Lincident_expiration.clear()
+    self.Llongitude.clear()
+    self.Llatitude.clear()
+
+    Mysqlall = cursor.execute(abfrage)
+    all = cursor.fetchall()
+
+    i = 0
+    while i < len(all):
+      self.Lname.append(all[i][0])
+      self.Llatitude.append(all[i][1])
+      self.Llongitude.append(all[i][2])
+      self.Lincident_grunt_type.append(all[i][3])
+      self.Lincident_expiration.append(all[i][4])
       i +=1
 
     cursor = cursor.close()

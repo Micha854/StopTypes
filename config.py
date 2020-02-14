@@ -13,8 +13,11 @@ class Config():
   min_longitude = ""
   max_longitude = ""
   token = ""
+  singlechatId = ""
+  singlechatUrl = ""
   chatId = ""
-  verlinkung = ""
+  chatUrl = ""
+  areaName = ""
 
   def readConfig(self,cfgFile):  
     parser = ConfigParser()
@@ -26,10 +29,13 @@ class Config():
     self.password = parser.get('Mysql', 'password')
 
     self.token = parser.get('Bot Settings', 'token')
+    self.singlechatId = parser.get('Bot Settings', 'singlechat_id')
+    self.singlechatUrl = parser.get('Bot Settings', 'singlechat_url')
     self.chatId = parser.get('Bot Settings', 'chat_id')
-    self.verlinkung = parser.get('Bot Settings', 'verlinkung')
+    self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
-    self.min_latitude = parser.get('Statements', 'min_latitude')
-    self.max_latitude = parser.get('Statements', 'max_latitude')
-    self.min_longitude = parser.get('Statements', 'min_longitude')
-    self.max_longitude = parser.get('Statements', 'max_longitude')
+    self.areaName = parser.get('Geofence', 'areaName')
+    self.min_latitude = parser.get('Geofence', 'minLat')
+    self.max_latitude = parser.get('Geofence', 'maxLat')
+    self.min_longitude = parser.get('Geofence', 'minLon')
+    self.max_longitude = parser.get('Geofence', 'maxLon')
