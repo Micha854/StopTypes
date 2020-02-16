@@ -154,7 +154,7 @@ class stopType():
     self.kaefer +=1
     self.Ekaefer = "\U0001F41E"
     self.Skaefer = self.Ekaefer + " " + str(self.kaefer) + " "
-    self.Tkaefer = "K\U000000e4fer ... Los mein Super K\U000000e4fer"
+    self.Tkaefer = "... Los mein Super K\U000000e4fer"
     self.Emoji = self.Ekaefer
     self.Infotext = self.Tkaefer
     return self.Emoji + self.Infotext
@@ -162,7 +162,7 @@ class stopType():
     self.drache +=1
     self.Edrache = "\U0001f432"
     self.Sdrache = self.Edrache + " " + str(self.drache) + " "
-    self.Tdrache = "Drache ... Gut gebr\U000000fcllt ist halb gewonnen"
+    self.Tdrache = "... Gut gebr\U000000fcllt ist halb gewonnen"
     self.Emoji = self.Edrache
     self.Infotext = self.Tdrache
     return self.Emoji + self.Infotext
@@ -170,7 +170,7 @@ class stopType():
     self.kampf +=1
     self.Ekampf = "\U0001f94a"
     self.Skampf = self.Ekampf + " " + str(self.kampf) + " "
-    self.Tkampf = "Kampf ... dient nur der Show"
+    self.Tkampf = "... dient nur der Show"
     self.Emoji = self.Ekampf
     self.Infotext = self.Tkampf
     return self.Emoji + self.Infotext
@@ -178,7 +178,7 @@ class stopType():
     self.feuer +=1
     self.Efeuer = "\U0001f525"
     self.Sfeuer = self.Efeuer + " " + str(self.feuer) + " "
-    self.Tfeuer = "Feuer ... Feueratem eines Pokemon"
+    self.Tfeuer = "... Feueratem eines Pokemon"
     self.Emoji = self.Efeuer
     self.Infotext = self.Tfeuer
     return self.Emoji + self.Infotext
@@ -186,7 +186,7 @@ class stopType():
     self.flug +=1
     self.Eflug = "\U0001f426"
     self.Sflug = self.Eflug + " " + str(self.flug) + " "
-    self.Tflug = "Flug ... Mein Vogel Pokemon will"
+    self.Tflug = "... Mein Vogel Pokemon will"
     self.Emoji = self.Eflug
     self.Infotext = self.Tflug
     return self.Emoji + self.Infotext
@@ -194,7 +194,7 @@ class stopType():
     self.pflanze +=1
     self.Epflanze = "\U0001f33f"
     self.Spflanze = self.Epflanze + " " + str(self.pflanze) + " "
-    self.Tpflanze = "Pflanze ... nicht gut Beeren essen"
+    self.Tpflanze = "... nicht gut Beeren essen"
     self.Emoji = self.Epflanze
     self.Infotext = self.Tpflanze
     return self.Emoji + self.Infotext
@@ -202,7 +202,7 @@ class stopType():
     self.boden +=1
     self.Eboden = "\U0001f5fb"
     self.Sboden = self.Eboden + " " + str(self.boden) + " "
-    self.Tboden = "Boden ... in den Boden stampfen"
+    self.Tboden = "... in den Boden stampfen"
     self.Emoji = self.Eboden
     self.Infotext = self.Tboden
     return self.Emoji + self.Infotext
@@ -210,7 +210,7 @@ class stopType():
     self.normal +=1
     self.Enormal = "\U0001f518"
     self.Snormal = self.Enormal + " " + str(self.normal) + " "
-    self.Tnormal = "Normal ... noch lange nicht schwach"
+    self.Tnormal = "... noch lange nicht schwach"
     self.Emoji = self.Enormal
     self.Infotext = self.Tnormal
     return self.Emoji + self.Infotext
@@ -218,7 +218,7 @@ class stopType():
     self.gift +=1
     self.Egift = "\U0001f40d"
     self.Sgift = self.Egift + " " + str(self.gift) + " "
-    self.Tgift = "Gift ... Gift drauf nehmen"
+    self.Tgift = "... Gift drauf nehmen"
     self.Emoji = self.Egift
     self.Infotext = self.Tgift
     return self.Emoji + self.Infotext
@@ -226,7 +226,7 @@ class stopType():
     self.psycho +=1
     self.Epsycho = "\U0001f52e"
     self.Spsycho = self.Epsycho + " " + str(self.psycho) + " "
-    self.Tpsycho = "Psycho ... unsichtbaren Kr\U000000e4ften"
+    self.Tpsycho = "... unsichtbaren Kr\U000000e4ften"
     self.Emoji = self.Epsycho
     self.Infotext = self.Tpsycho
     return self.Emoji + self.Infotext
@@ -234,7 +234,7 @@ class stopType():
     self.gestein +=1
     self.Egestein = "\U0001f9f1"
     self.Sgestein = self.Egestein + " " + str(self.gestein) + " "
-    self.Tgestein = "Gestein ... Bringen wir den Stein ins Rollen"
+    self.Tgestein = "... Bringen wir den Stein ins Rollen"
     self.Emoji = self.Egestein
     self.Infotext = self.Tgestein
     return self.Emoji + self.Infotext
@@ -242,7 +242,7 @@ class stopType():
     self.wasser +=1
     self.Ewasser = "\U0001f4a7"
     self.Swasser = self.Ewasser + " " + str(self.wasser) + " "
-    self.Twasser = "Wasser ... Gew\U000000e4sser sind tr\U000000fcgerisch"
+    self.Twasser = "... Gew\U000000e4sser sind tr\U000000fcgerisch"
     self.Emoji = self.Ewasser
     self.Infotext = self.Twasser
     return self.Emoji + self.Infotext
@@ -258,7 +258,7 @@ class stopType():
     self.elektro +=1
     self.Eelektro = "\U000026a1"
     self.Selektro = self.Eelektro + " " + str(self.elektro) + " "
-    self.Telektro = "Elektro ... Du wirst schockiert sein"
+    self.Telektro = "... Du wirst schockiert sein"
     self.Emoji = self.Eelektro
     self.Infotext = self.Telektro
     return self.Emoji + self.Infotext
@@ -266,7 +266,7 @@ class stopType():
     self.geist +=1
     self.Egeist  = "\U0001f47b"
     self.Sgeist  = self.Egeist + " " + str(self.geist) + " "
-    self.Tgeist = "Geist ... Buhu ... Buhuhu"
+    self.Tgeist = "... Buhu ... Buhuhu"
     self.Emoji = self.Egeist
     self.Infotext = self.Tgeist
     return self.Emoji + self.Infotext
@@ -274,7 +274,7 @@ class stopType():
     self.fee +=1
     self.Efee  = "\U0001f311"
     self.Sfee  = self.Efee + " "+ str(self.fee) + " "
-    self.Tfee = "Fee ... Wie niedlich mein Pokemon ist"
+    self.Tfee = "... Wie niedlich mein Pokemon ist"
     self.Emoji = self.Efee
     self.Infotext = self.Tfee
     return self.Emoji + self.Infotext
@@ -282,7 +282,7 @@ class stopType():
     self.stahl +=1
     self.Estahl  = "\U0001f311"
     self.Sstahl  = self.Estahl + " " + str(self.stahl) + " "
-    self.Tstahl =  "Stahl ... Gegen meinen eisernen Willen"
+    self.Tstahl =  "... Gegen meinen eisernen Willen"
     self.Emoji = self.Estahl
     self.Infotext = self.Tstahl
     return self.Emoji + self.Infotext
@@ -290,7 +290,7 @@ class stopType():
     self.unlicht +=1
     self.Eunlicht = "\U0001f311"
     self.Sunlicht = self.Eunlicht + " " + str(self.unlicht) + " "
-    self.Tunlicht = "Unlicht ... Wo Licht ist, da ist auch Schatten"
+    self.Tunlicht = "... Wo Licht ist, da ist auch Schatten"
     self.Emoji = self.Eunlicht
     self.Infotext = self.Tunlicht
     return self.Emoji + self.Infotext
@@ -298,7 +298,7 @@ class stopType():
     self.eis +=1
     self.Eeis = "\U00002744"
     self.Seis = self.Eeis + " " + str(self.eis) + " "
-    self.Teis = "Eis ... Du bewegst dich auf d\U000000fcnnen Eis"
+    self.Teis = "... Du bewegst dich auf d\U000000fcnnen Eis"
     self.Emoji = self.Eeis
     self.Infotext = self.Teis
     return self.Emoji + self.Infotext
