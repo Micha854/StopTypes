@@ -10,6 +10,7 @@ class createMessage():
     i = 0 # summe gesamt
     j = 0 # bosse
     k = 0 # rocket stops
+    lm= 0
     message = ""
     boss_message = send.oldBossMessage
     lockmodul_message = ""

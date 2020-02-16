@@ -8,10 +8,7 @@ class Config():
   database = ""
   user = ""
   password = ""
-  min_latitude = ""
-  max_latitude = ""
-  min_longitude = ""
-  max_longitude = ""
+  fence = ""
   token = ""
   singlechatId = ""
   singlechatUrl = ""
@@ -35,7 +32,4 @@ class Config():
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
     self.areaName = parser.get('Geofence', 'areaName')
-    self.min_latitude = parser.get('Geofence', 'minLat')
-    self.max_latitude = parser.get('Geofence', 'maxLat')
-    self.min_longitude = parser.get('Geofence', 'minLon')
-    self.max_longitude = parser.get('Geofence', 'maxLon')
+    self.fence = parser.get('Geofence', 'fence')
