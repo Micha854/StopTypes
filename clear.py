@@ -1,5 +1,4 @@
 import telebot
-import time
 
 class Clear():
   def clear(self,token,singlechatID,cfg):

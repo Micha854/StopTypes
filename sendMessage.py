@@ -2,9 +2,11 @@ import telebot
 import time
 
 class sendMessage():
+  areaName = ""
   oldBossMessage = ""
   oldoverviewMessage = ""
   oldLockmodulMessage = ""
+  oldMessage = ""
   chatID = 0
   singlechatID = 0
   bossid = 0
@@ -18,7 +20,7 @@ class sendMessage():
   list_boss_message_ID = []
   list_lockmodul_output = []
   list_lockmodul_message_ID = []
-  areaName = ""
+
   def send(self,message):
     if len(self.oldMessage) != len(message):
       try:

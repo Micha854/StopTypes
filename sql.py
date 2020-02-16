@@ -21,14 +21,14 @@ class Sql():
     except:
       print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
       time.sleep(15)
-      return self.startSQL(cfg)
+      #return self.startSQL(cfg)
     self.name.clear()
     self.incident_grunt_type.clear()
     self.incident_expiration.clear()
     self.longitude.clear()
     self.latitude.clear()
 
-    Mysqlall = cursor.execute(abfrage)
+    cursor.execute(abfrage)
     all = cursor.fetchall()
 
     i = 0
@@ -51,14 +51,14 @@ class Sql():
     except:
       print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
       time.sleep(15)
-      return self.startSQL(cfg)
+      #return self.startSQL(cfg)
     self.Lname.clear()
     self.Lincident_grunt_type.clear()
     self.Lincident_expiration.clear()
     self.Llongitude.clear()
     self.Llatitude.clear()
 
-    Mysqlall = cursor.execute(abfrage)
+    cursor.execute(abfrage)
     all = cursor.fetchall()
 
     i = 0
