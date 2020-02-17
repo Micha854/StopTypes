@@ -11,6 +11,7 @@ class createMessage():
     j = 0 # bosse
     k = 0 # rocket stops
     lm= 0
+    newk = 0
     message = ""
     boss_message = send.oldBossMessage
     lockmodul_message = ""
@@ -20,6 +21,7 @@ class createMessage():
     now = datetime.datetime.now()
     print("\n\n-------------------------------------- Update " + cfg.areaName + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
     print("gefundene Pokestops: " + str(len(sql.name)) + "\n")
+    newk = len(sql.name)
 
     for name in sql.Lname:
       typ = stop.getType(sql.Lincident_grunt_type[lm])
@@ -97,7 +99,7 @@ class createMessage():
 
     message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "Hier gehts zu den Bossen</a>"
     lockmodul_message = self.list_lockmodul(send,sql,cfg)
-    send.sendOverview(message_overview_rocket + message,lockmodul_message)
+    send.sendOverview(message_overview_rocket + message,newk,j,k,lockmodul_message)
 
 
   def list_boss(self,send,sql,cfg):

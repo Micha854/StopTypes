@@ -103,10 +103,19 @@ class sendMessage():
     self.bossid = id.message_id
     return self.bossid
 
-  def sendOverview(self,message,lockmodul_message):
+  def sendOverview(self,message,newk,j,k,lockmodul_message):
+    print("rupel: " + str(newk-j))
+    print("old R: " + str(k))
     if self.oldoverviewMessage == message:
       self.sendLockmodul(True,lockmodul_message)
-      return
+      return message
+    if len(self.oldoverviewMessage) > len(message) and newk-j == k:
+      try:
+        self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
+        self.oldoverviewMessage = message
+        return message
+      except:
+        print("Konnte Rüpel Liste nicht editieren !!! ID: " + str(self.overviewid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.overviewid.message_id)
     except:
