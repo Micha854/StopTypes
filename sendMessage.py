@@ -87,11 +87,11 @@ class sendMessage():
 #        message = ""
         return self.bossid
       except:
-        print("ID nicht gefunden")
+        print("Boss Single-Message nicht gefunden")
     try:
       self.bot.delete_message(self.singlechatID,self.bossid)
     except:
-      print("1Nichts zu entfernen")
+      print("Boss Single-Message konnte nicht entfernt werden !!")
     if message == "":
       message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
       self.oldBossMessage = ""
@@ -109,8 +109,9 @@ class sendMessage():
     if self.oldoverviewMessage == message:
       self.sendLockmodul(True,lockmodul_message)
       return message
-    if len(self.oldoverviewMessage) > len(message) and newk-j == k:
+    if len(self.oldoverviewMessage) > len(message) and newk-j == k or self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message):
       try:
+        print(message)
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
         self.oldoverviewMessage = message
         return message
@@ -119,7 +120,7 @@ class sendMessage():
     try:
       self.bot.delete_message(self.chatID,self.overviewid.message_id)
     except:
-      print("2Nichts zu entfernen")
+      print("Rüpel Liste konnte nicht entfernt werden !!")
     if message == "":
       message = "Aktuell keine Rockestops vorhanden"
       self.oldoverviewMessage = ""
@@ -135,7 +136,7 @@ class sendMessage():
     try:
       self.bot.delete_message(self.chatID,self.lockmodulid.message_id)
     except:
-      print("3Nichts zu entfernen")
+      print("Lockmodul Liste konnte nicht entfernt werden !!")
     if len(lockmodul_message) > 5:
       #lockmodul_message = "Aktuell keine Lockmodule vorhanden"
       self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
@@ -147,12 +148,12 @@ class sendMessage():
     for name in self.list_output:
       if not encounter.__contains__(name):
         try:
-          print("1Entferne Nachricht")
+          print("Entferne Rupel Nachricht")
           self.bot.delete_message(self.singlechatID,self.list_message_ID[i])
           self.list_message_ID.__delitem__(i)
           self.list_output.__delitem__(i)
         except:
-          print("1Nachricht konnte nicht entfernt werden")
+          print("Rupel Nachricht konnte nicht entfernt werden")
       i +=1
     outF = open(self.areaName+"output.txt","w")
     outF.writelines(str(self.list_message_ID))
@@ -161,12 +162,12 @@ class sendMessage():
     for name in self.list_boss_output:
       if not encounter.__contains__(name):
         try:
-          print("2Entferne Nachricht")
+          print("Entferne BOSS Nachricht")
           self.bot.delete_message(self.singlechatID,self.list_boss_message_ID[i])
           self.list_boss_message_ID.__delitem__(i)
           self.list_boss_output.__delitem__(i)
         except:
-          print("2Nachricht konnte nicht entfernt werden")
+          print("BOSS Nachricht konnte nicht entfernt werden")
       i +=1
     outF = open(self.areaName+"boss-output.txt","w")
     outF.writelines(str(self.list_boss_message_ID))
@@ -175,12 +176,12 @@ class sendMessage():
     for name in self.list_lockmodul_output:
       if not lockmodul.__contains__(name):
         try:
-          print("3Entferne Nachricht")
+          print("Entferne Lockmodul Nachricht")
           self.bot.delete_message(self.singlechatID,self.list_lockmodul_message_ID[i])
           self.list_lockmodul_message_ID.__delitem__(i)
           self.list_lockmodul_output.__delitem__(i)
         except:
-          print("3Nachricht konnte nicht entfernt werden")
+          print("Lockmodul Nachricht konnte nicht entfernt werden")
       i +=1
     outF = open(self.areaName+"lockmodul-output.txt","w")
     outF.writelines(str(self.list_lockmodul_message_ID))
