@@ -22,20 +22,6 @@ class sendMessage():
   list_lockmodul_output = []
   list_lockmodul_message_ID = []
 
-  def send(self,message):
-    if len(self.oldMessage) != len(message):
-      try:
-        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.messageID, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
-        self.messageID = id.message_id
-        self.lastMessage = message
-      except:
-        print("ging ned")
-      id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) ##Nachricht traunstein quests
-      self.counter = 0
-      self.messageID= id.message_id
-      self.lastMessage = message
-      time.sleep(3600)
-
   def setConfig(self,token,singlechatID,chatID,areaName,areaNumber):
     self.areaName = areaName
     self.areaNumber = areaNumber
@@ -82,11 +68,9 @@ class sendMessage():
       return self.bossid
     if len(message) > 5:
       try:
-        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True) ##Nachricht traunstein quests
+        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
         self.oldBossMessage = message
         self.bossid = id.message_id
-#test zum entfernen der message
-#        message = ""
         return self.bossid
       except:
         print("Boss Single-Message nicht gefunden")
@@ -139,8 +123,7 @@ class sendMessage():
     except:
       print("Lockmodul Liste konnte nicht entfernt werden !!")
     if len(lockmodul_message) > 5:
-      #lockmodul_message = "Aktuell keine Lockmodule vorhanden"
-      self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
+      self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=False) 
       self.oldLockmodulMessage = lockmodul_message
 
   def clearOutputList(self,encounter,lockmodul):

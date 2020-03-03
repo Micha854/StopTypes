@@ -16,8 +16,13 @@ class Sql():
   Llatitude = []
 
   def myGeo(self,cfg):
-    connection = MySQLdb.connect(host=cfg.host,db=cfg.database,user=cfg.user, passwd=cfg.password)
-    cursor = connection.cursor()
+    try:
+      connection = MySQLdb.connect(host=cfg.host,db=cfg.database,user=cfg.user, passwd=cfg.password)
+      cursor = connection.cursor()
+    except:
+      print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
+      time.sleep(15)
+      return self.myGeo(cfg)
     cursor.execute("SELECT fence_data FROM `settings_geofence`")
     result = cursor.fetchall()
 
@@ -44,6 +49,8 @@ class Sql():
     geofence_cords += first_cord
     geofence_dict[dictkey] = geofence_cords
 
+    cursor = cursor.close()
+    connection.close()
     del geofence_dict['temp']
     return geofence_dict
 

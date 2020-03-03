@@ -24,7 +24,7 @@ class createMessage():
     newk = len(sql.name)
 
     for name in sql.Lname:
-      typ = stop.getType(sql.Lincident_grunt_type[lm])
+      stop.getType(sql.Lincident_grunt_type[lm])
       lm +=1
 
     for name in sql.name:
@@ -37,21 +37,21 @@ class createMessage():
         list_string = list_string.split(', ') 
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
-        typ = stop.getType(sql.incident_grunt_type[i])
+        stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_output.index(name)]
         # erste nachricht
         message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         k +=1
         i +=1
       elif send.list_boss_output.__contains__(name):
-        typ = stop.getType(sql.incident_grunt_type[i])
+        stop.getType(sql.incident_grunt_type[i])
         j +=1
         i +=1
       else:
         stopName = sql.name[i]
         latitude = sql.latitude[i]
         longitude = sql.longitude[i]
-        typ = stop.getType(sql.incident_grunt_type[i])
+        stop.getType(sql.incident_grunt_type[i])
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
         print("... verarbeite Pokestop: " + str(stopName))
@@ -127,7 +127,7 @@ class createMessage():
         list_string = list_string.split(', ') 
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
-        typ = stop.getType(sql.incident_grunt_type[i])
+        stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_boss_output.index(name)]
         boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         j +=1
@@ -152,7 +152,7 @@ class createMessage():
         list_string = list_string.split(', ') 
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
-        typ = stop.getType(sql.Lincident_grunt_type[i])
+        stop.getType(sql.Lincident_grunt_type[i])
         id = list_string[send.list_lockmodul_output.index(name)]
         lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
@@ -165,7 +165,7 @@ class createMessage():
         stopName = sql.Lname[i]
         latitude = sql.Llatitude[i]
         longitude = sql.Llongitude[i]
-        typ = stop.getType(sql.Lincident_grunt_type[i])
+        stop.getType(sql.Lincident_grunt_type[i])
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
