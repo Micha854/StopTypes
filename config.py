@@ -14,6 +14,7 @@ class Config():
   chatId = ""
   chatUrl = ""
   areaName = ""
+  areaNumber = ""
 
   def readConfig(self,cfgFile):  
     parser = ConfigParser()
@@ -31,3 +32,4 @@ class Config():
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
     self.areaName = parser.get('Geofence', 'areaName')
+    self.areaNumber = parser.get('Geofence', 'areaNumber')

@@ -3,6 +3,7 @@ import time
 
 class sendMessage():
   areaName = ""
+  areaNumber = ""
   oldBossMessage = ""
   oldoverviewMessage = ""
   oldLockmodulMessage = ""
@@ -35,8 +36,9 @@ class sendMessage():
       self.lastMessage = message
       time.sleep(3600)
 
-  def setConfig(self,token,singlechatID,chatID,areaName):
+  def setConfig(self,token,singlechatID,chatID,areaName,areaNumber):
     self.areaName = areaName
+    self.areaNumber = areaNumber
     self.singlechatID = singlechatID
     self.chatID = chatID
     self.bot = telebot.TeleBot(token)
@@ -51,7 +53,7 @@ class sendMessage():
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
       self.list_lockmodul_output.append(name)
       self.list_lockmodul_message_ID.append(id.message_id)
-      outF = open(self.areaName+"lockmodul-output.txt","w")
+      outF = open(self.areaName+self.areaNumber+"lockmodul-output.txt","w")
       outF.writelines(str(self.list_lockmodul_message_ID))
       outF.close()
       return id.message_id
@@ -64,13 +66,13 @@ class sendMessage():
     if typ > 40 and typ < 45:
       self.list_boss_output.append(name)
       self.list_boss_message_ID.append(id.message_id)
-      outF = open(self.areaName+"boss-output.txt","w")
+      outF = open(self.areaName+self.areaNumber+"boss-output.txt","w")
       outF.writelines(str(self.list_boss_message_ID))
       outF.close()
       return id.message_id
     self.list_output.append(name)
     self.list_message_ID.append(id.message_id)
-    outF = open(self.areaName+"output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"output.txt","w")
     outF.writelines(str(self.list_message_ID))
     outF.close()
     return id.message_id
@@ -154,7 +156,7 @@ class sendMessage():
         except:
           print("Rupel Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+"output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"output.txt","w")
     outF.writelines(str(self.list_message_ID))
     outF.close()
     i = 0
@@ -168,7 +170,7 @@ class sendMessage():
         except:
           print("BOSS Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+"boss-output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"boss-output.txt","w")
     outF.writelines(str(self.list_boss_message_ID))
     outF.close()
     i = 0
@@ -182,7 +184,7 @@ class sendMessage():
         except:
           print("Lockmodul Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+"lockmodul-output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"lockmodul-output.txt","w")
     outF.writelines(str(self.list_lockmodul_message_ID))
     outF.close()
 

@@ -4,7 +4,7 @@ class Clear():
   def clear(self,token,singlechatID,cfg):
     bot = telebot.TeleBot(token)
     try:
-      f = open(cfg.areaName+"output.txt", "r")
+      f = open(cfg.areaName+cfg.areaNumber+"output.txt", "r")
     except:
       return
     oldMessages = f.read()
@@ -17,7 +17,7 @@ class Clear():
       except:
         print("Alte BOSS Nachricht konnte nicht entfernt werden")
     try:
-      f = open(cfg.areaName+"boss-output.txt", "r")
+      f = open(cfg.areaName+cfg.areaNumber+"boss-output.txt", "r")
     except:
       return
     oldMessages = f.read()
@@ -30,7 +30,7 @@ class Clear():
       except:
         print("Alte Lockmodul Nachricht konnte nicht entfernt werden")
     try:
-      f = open(cfg.areaName+"lockmodul-output.txt", "r")
+      f = open(cfg.areaName+cfg.areaNumber+"lockmodul-output.txt", "r")
     except:
       return
     oldMessages = f.read()

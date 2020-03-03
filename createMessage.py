@@ -19,7 +19,7 @@ class createMessage():
     
     #now time
     now = datetime.datetime.now()
-    print("\n\n-------------------------------------- Update " + cfg.areaName + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
+    print("\n\n-------------------------------------- Update " + cfg.areaName + cfg.areaNumber + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
     print("gefundene Pokestops: " + str(len(sql.name)) + "\n")
     newk = len(sql.name)
 
@@ -29,7 +29,7 @@ class createMessage():
 
     for name in sql.name:
       if send.list_output.__contains__(name):
-        f = open(cfg.areaName+"output.txt", "r")
+        f = open(cfg.areaName+cfg.areaNumber+"output.txt", "r")
             # Split the string based on space delimiter 
         list_string = f.read()
         list_string = list_string[1:len(list_string)-1]
@@ -119,7 +119,7 @@ class createMessage():
     j = 0
     for name in sql.name:
       if send.list_boss_output.__contains__(name):
-        f = open(cfg.areaName+"boss-output.txt", "r")
+        f = open(cfg.areaName+cfg.areaNumber+"boss-output.txt", "r")
               # Split the string based on space delimiter 
         list_string = f.read()
         list_string = list_string[1:len(list_string)-1]
@@ -144,7 +144,7 @@ class createMessage():
     lm= 0
     for name in sql.Lname:
       if send.list_lockmodul_output.__contains__(name):
-        f = open(cfg.areaName+"lockmodul-output.txt", "r")
+        f = open(cfg.areaName+cfg.areaNumber+"lockmodul-output.txt", "r")
               # Split the string based on space delimiter 
         list_string = f.read()
         list_string = list_string[1:len(list_string)-1]

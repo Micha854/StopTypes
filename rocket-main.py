@@ -26,20 +26,20 @@ def splitOnValue(input, breakIdent):
 Sql = sql.Sql()
 result = Sql.myGeo(cfg)
 
-fence_file = open(cfg.areaName+"geofence.txt", "w")
+fence_file = open(cfg.areaName+cfg.areaNumber+"geofence.txt", "w")
 write_cords = fence_file.write(result[cfg.areaName])
 fence_file.close()
 
-fence_file = open(cfg.areaName+"geofence.txt", "r")
+fence_file = open(cfg.areaName+cfg.areaNumber+"geofence.txt", "r")
 geofence = fence_file.read()
 fence_file.close()
 
 clear = clear.Clear()
 clear.clear(cfg.token,cfg.singlechatId,cfg)
 send = sendMessage.sendMessage()
-send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName)
+send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName,cfg.areaNumber)
 
-sys.stdout.write("\x1b]2;%s\x07" % cfg.areaName)
+sys.stdout.write("\x1b]2;%s\x07" % cfg.areaName+cfg.areaNumber)
 
 while 1 == 1:
   Sql = sql.Sql()
