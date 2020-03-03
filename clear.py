@@ -15,7 +15,7 @@ class Clear():
       try:
         bot.delete_message(singlechatID,message_id=messageID)
       except:
-        print("1Nachricht konnte nicht entfernt werden")
+        print("Alte BOSS Nachricht konnte nicht entfernt werden")
     try:
       f = open(cfg.areaName+"boss-output.txt", "r")
     except:
@@ -28,7 +28,7 @@ class Clear():
       try:
         bot.delete_message(singlechatID,message_id=messageID)
       except:
-        print("2Nachricht konnte nicht entfernt werden")
+        print("Alte Lockmodul Nachricht konnte nicht entfernt werden")
     try:
       f = open(cfg.areaName+"lockmodul-output.txt", "r")
     except:
@@ -41,4 +41,4 @@ class Clear():
       try:
         bot.delete_message(singlechatID,message_id=messageID)
       except:
-        print("3Nachricht konnte nicht entfernt werden")
+        print("Alte Rüpel Nachricht konnte nicht entfernt werden")

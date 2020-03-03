@@ -306,7 +306,7 @@ class stopType():
   ####Bosse
   def typ41(self):
     self.cliff +=1
-    self.Ecliff = "\U0001f63a"
+    self.Ecliff = "\U0001F9B9"
     self.Scliff = self.Ecliff + " " + str(self.cliff) + " "
     self.Tcliff = "Team Leader Cliff"
     self.Emoji = self.Ecliff
@@ -314,7 +314,7 @@ class stopType():
     return self.Emoji + self.Infotext
   def typ42(self):
     self.arlo +=1
-    self.Earlo = "\U0001f997"
+    self.Earlo = "\U0001F9B8"
     self.Sarlo = self.Earlo + " " + str(self.arlo) + " "
     self.Tarlo = "Team Leader Arlo"
     self.Emoji = self.Earlo
@@ -322,7 +322,7 @@ class stopType():
     return self.Emoji + self.Infotext
   def typ43(self):
     self.sierra +=1
-    self.Esierra = "\U00002603"
+    self.Esierra = "\U0001F45A"
     self.Ssierra = self.Esierra + " " + str(self.sierra) + " "
     self.Tsierra = "Team Leader Sierra"
     self.Emoji = self.Esierra

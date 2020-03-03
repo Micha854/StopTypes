@@ -54,7 +54,7 @@ class createMessage():
         typ = stop.getType(sql.incident_grunt_type[i])
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
-        print("... verarbeite Pokestop: " + stopName)
+        print("... verarbeite Pokestop: " + str(stopName))
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext       
         id = send.singleStops(bolt_line,stopName,latitude,longitude,sql.incident_grunt_type[i])
         if sql.incident_grunt_type[i] > 40 and sql.incident_grunt_type[i] < 45:
@@ -76,28 +76,36 @@ class createMessage():
       print("changed: "+ str(j))
     boss_message = self.list_boss(send,sql,cfg)
     bossid = send.sendBoss(boss_message)
+
+    # define lists
     listLM = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet
-    
-    print("\nListen:\n")
-    print("LM: "+ listLM)
+    listRR = stop.Srelaxo + stop.Skarpador + stop.Skanto + stop.Snormal + stop.Swasser + stop.Sfeuer + stop.Sdrache + stop.Sflug + stop.Spflanze + stop.Skaefer + stop.Sboden + stop.Sgestein + stop.Sgift + stop.Spsycho + stop.Skampf + stop.Seis + stop.Sgeist + stop.Selektro + stop.Sfee + stop.Sstahl + stop.Sunlicht
     listRB = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni
-    print("RB: "+ listRB)
-    listRR = stop.Srelaxo + stop.Skarpador + stop.Skanto + stop.Snormal + stop.Swasser + stop.Sfeuer + stop.Sdrache + stop.Sflug + stop.Spflanze + stop.Skaefer + stop.Sboden + stop.Sgestein + stop.Sgift + stop.Spsycho + stop.Skampf + stop.Seis + stop.Sgeist + stop.Selektro + stop.Sfee + stop.Sstahl + stop.Sunlicht + "\n"
-    print("RR: "+ listRR)
+
+    print("\nListen:\n")
+
+    print("LM: "+ listLM)
+    print("RR: "+ listRR)   
+    print("RB: "+ listRB + "\n")
     
     if listLM:
+      listLM = "L: " + listLM
       u1 = "\n"
     else:
       u1 = ''
 
-    if listRB:
+    if listRR:
+      listRR = "R: " + listRR
       u2 = "\n"
     else:
       u2 = ''
-    
-    message_overview_rocket = listLM + u1 + listRB + u2 + listRR +"\nAktuell " + str(i-j) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a> \n\n"
 
-    message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "Hier gehts zu den Bossen</a>"
+    if listRB:
+      listRB = "B: " + listRB
+    
+    message_overview_rocket = listLM + u1 + listRR + u2 + listRB + "\n\n" + "<b>Aktuell " + str(i-j) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a></b> \n\n"
+
+    message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
     lockmodul_message = self.list_lockmodul(send,sql,cfg)
     send.sendOverview(message_overview_rocket + message,newk,j,k,lockmodul_message)
 
@@ -124,7 +132,7 @@ class createMessage():
         boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         j +=1
       i +=1
-      message_overview_boss = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni + "\n\n" + "Aktuell " + str(j) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a> \n\n"
+      message_overview_boss = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(j) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
     return message_overview_boss + boss_message
 
   def list_lockmodul(self,send,sql,cfg):
@@ -149,6 +157,10 @@ class createMessage():
         lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
         lm+=1
+        if lm == 1:
+          text_modul = "Modul:"
+        else:
+          text_modul = "Module:"
       else:
         stopName = sql.Lname[i]
         latitude = sql.Llatitude[i]
@@ -161,5 +173,9 @@ class createMessage():
         lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
         lm+=1
-      message_overview_lockmodul = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet + "\n\n" + "Aktuell " + str(lm) + " <a href='" + cfg.chatUrl +"/'>Lock Modul an folgendem Stop:</a> \n\n"
+        if lm == 1:
+          text_modul = "Modul:"
+        else:
+          text_modul = "Module:"
+      message_overview_lockmodul = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet + "\n\n" + "<b>Aktuell " + str(lm) + " <a href='" + cfg.chatUrl +"/'>Lock " + text_modul + "</a></b> \n\n"
     return message_overview_lockmodul + lockmodul_message

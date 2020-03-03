@@ -8,7 +8,6 @@ class Config():
   database = ""
   user = ""
   password = ""
-  fence = ""
   token = ""
   singlechatId = ""
   singlechatUrl = ""
@@ -32,4 +31,3 @@ class Config():
     self.chatUrl = parser.get('Bot Settings', 'chat_url')
 
     self.areaName = parser.get('Geofence', 'areaName')
-    self.fence = parser.get('Geofence', 'fence')

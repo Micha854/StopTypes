@@ -111,7 +111,6 @@ class sendMessage():
       return message
     if len(self.oldoverviewMessage) > len(message) and newk-j == k or self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message):
       try:
-        print(message)
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
         self.oldoverviewMessage = message
         return message

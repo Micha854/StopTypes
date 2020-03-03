@@ -1,5 +1,7 @@
 import MySQLdb
 import time
+import json
+import re
 
 class Sql():
   name = []
@@ -13,6 +15,38 @@ class Sql():
   Llongitude = []
   Llatitude = []
 
+  def myGeo(self,cfg):
+    connection = MySQLdb.connect(host=cfg.host,db=cfg.database,user=cfg.user, passwd=cfg.password)
+    cursor = connection.cursor()
+    cursor.execute("SELECT fence_data FROM `settings_geofence`")
+    result = cursor.fetchall()
+
+    x = str(result).replace("[('[", "").replace("]',)]", "").replace('"[', "").replace(']\',)', "").replace(']"', "").replace("('[", "").split(""", """)
+    x = tuple(x)	
+    geofence_dict=dict([])
+    geofence_cords = "000000"
+    dictkey = 'temp'
+    first_cord = "000000"
+
+    for item in x[0:len(x)-1]:
+        element = item.replace(",", " ").replace('"', "")
+        if re.search('[a-zA-Z]', element):
+            geofence_cords += first_cord
+            geofence_dict[dictkey] = geofence_cords
+            dictkey = element
+            geofence_cords = ""
+            first_cord = ""
+        else:
+            if first_cord == "":
+                first_cord = element
+            element += ', '
+            geofence_cords += element
+    geofence_cords += first_cord
+    geofence_dict[dictkey] = geofence_cords
+
+    del geofence_dict['temp']
+    return geofence_dict
+
   def rocketSQL(self,cfg,abfrage):
     #Verbindungsaufbau zur MySQL-Datenbank
     try:
@@ -21,7 +55,7 @@ class Sql():
     except:
       print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
       time.sleep(15)
-      #return self.startSQL(cfg)
+      return self.rocketSQL(cfg,abfrage)
     self.name.clear()
     self.incident_grunt_type.clear()
     self.incident_expiration.clear()
@@ -51,7 +85,7 @@ class Sql():
     except:
       print("Kein Verbindungsaufbau zur Datenbank, probiere es in 15 Sekunden erneut\n")
       time.sleep(15)
-      #return self.startSQL(cfg)
+      return self.lockmodulSQL(cfg,abfrage)
     self.Lname.clear()
     self.Lincident_grunt_type.clear()
     self.Lincident_expiration.clear()
