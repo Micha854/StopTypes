@@ -22,6 +22,12 @@ class sendMessage():
   list_lockmodul_output = []
   list_lockmodul_message_ID = []
 
+  
+  try:
+    newOverviewSend = newOverviewSend
+  except:
+    newOverviewSend = 0
+  
   def setConfig(self,token,singlechatID,chatID,areaName,areaNumber):
     self.areaName = areaName
     self.areaNumber = areaNumber
@@ -93,12 +99,14 @@ class sendMessage():
     print("rupel: " + str(newk-j))
     print("old R: " + str(k))
     if self.oldoverviewMessage == message:
+      self.newOverviewSend = 0
       self.sendLockmodul(True,lockmodul_message)
-      return message
-    if len(self.oldoverviewMessage) > len(message) and newk-j == k or self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message):
+      return message, self.newOverviewSend
+    if len(self.oldoverviewMessage) > len(message) and newk-j == k and self.newOverviewSend == 0 or self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message) and self.newOverviewSend == 0:
       try:
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
         self.oldoverviewMessage = message
+        self.newOverviewSend = 0
         return message
       except:
         print("Konnte Rüpel Liste nicht editieren !!! ID: " + str(self.overviewid.message_id))
@@ -110,18 +118,29 @@ class sendMessage():
       message = "Aktuell keine Rockestops vorhanden"
       self.oldoverviewMessage = ""
       self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
-      return
+      self.newOverviewSend = 1
+      return self.newOverviewSend
     self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
     self.oldoverviewMessage = message
+    self.newOverviewSend = 1
     self.sendLockmodul(False,lockmodul_message)
+    return self.newOverviewSend
 
   def sendLockmodul(self,bool,lockmodul_message):
     if self.oldLockmodulMessage == lockmodul_message and bool:
       return
+    if len(self.oldLockmodulMessage) > len(lockmodul_message) and len(lockmodul_message) > 5 and self.chatID != self.singlechatID and self.newOverviewSend == 0:
+      try:
+        self.bot.edit_message_text(lockmodul_message,chat_id=self.chatID, message_id=self.lockmodulid.message_id, parse_mode='HTML',disable_web_page_preview=True)
+        self.oldLockmodulMessage = lockmodul_message
+        return lockmodul_message
+      except:
+        print("Konnte Lockmodul Liste nicht edetieren !!! ID: " + str(self.lockmodulid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.lockmodulid.message_id)
+      self.oldLockmodulMessage = lockmodul_message
     except:
-      print("Lockmodul Liste konnte nicht entfernt werden !!")
+      print("\nLockmodul Liste konnte nicht entfernt werden !!")
     if len(lockmodul_message) > 5:
       self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=False) 
       self.oldLockmodulMessage = lockmodul_message

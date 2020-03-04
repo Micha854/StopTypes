@@ -89,21 +89,15 @@ class createMessage():
     print("RB: "+ listRB + "\n")
     
     if listLM:
-      listLM = "L: " + listLM
-      u1 = "\n"
-    else:
-      u1 = ''
+      listLM = "L: " + listLM + "\n"
 
     if listRR:
-      listRR = "R: " + listRR
-      u2 = "\n"
-    else:
-      u2 = ''
+      listRR = "R: " + listRR + "\n"
 
     if listRB:
-      listRB = "B: " + listRB
+      listRB = "B: " + listRB + "\n"
     
-    message_overview_rocket = listLM + u1 + listRR + u2 + listRB + "\n\n" + "<b>Aktuell " + str(i-j) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a></b> \n\n"
+    message_overview_rocket = listLM + listRR + listRB + "\n" + "<b>Aktuell " + str(i-j) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a></b> \n\n"
 
     message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
     lockmodul_message = self.list_lockmodul(send,sql,cfg)
