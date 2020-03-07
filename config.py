@@ -15,6 +15,8 @@ class Config():
   chatUrl = ""
   areaName = ""
   areaNumber = ""
+  sleep_time = 0
+  newMessageAfter = 0
 
   def readConfig(self,cfgFile):  
     parser = ConfigParser()
@@ -33,3 +35,6 @@ class Config():
 
     self.areaName = parser.get('Geofence', 'areaName')
     self.areaNumber = parser.get('Geofence', 'areaNumber')
+
+    self.sleep_time = parser.get('Message', 'sleep_time')
+    self.newMessageAfter = parser.get('Message', 'newMessageAfter')

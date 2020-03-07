@@ -1,10 +1,11 @@
 import helper
 import stopType
 import datetime
+import time
 
 
 class createMessage():
-  def create(self,send,sql,cfg):
+  def create(self,send,sql,cfg,timer,newMessageAfter):
     Help = helper.Helper()
     stop = stopType.stopType()
     i = 0 # summe gesamt
@@ -17,6 +18,19 @@ class createMessage():
     lockmodul_message = ""
     changed = True
     
+    if timer > newMessageAfter:
+      timer = 0
+      print("=== NEW SEND ===")
+    else:
+      print(str(timer))
+      print("\n")
+      print(str(newMessageAfter))
+    
+    if cfg.chatId != cfg.singlechatId:
+      newSend = newMessageAfter - timer
+      print("Rüpel Liste neu Senden in " + str(newSend) + " Sekunden")
+
+
     #now time
     now = datetime.datetime.now()
     print("\n\n-------------------------------------- Update " + cfg.areaName + cfg.areaNumber + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
@@ -40,7 +54,8 @@ class createMessage():
         stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_output.index(name)]
         # erste nachricht
-        message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+        if i < 45:
+          message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         k +=1
         i +=1
       elif send.list_boss_output.__contains__(name):
@@ -62,8 +77,10 @@ class createMessage():
           j +=1
         else:
           # update Nachricht
-          message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          if i < 45:
+            message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
+        print("Rocket Stop " + str(i) + "/" + str(len(sql.name)) + " ===> message len: " + str(len(message)))
     
     if j == send.list_boss_output.__len__():
       changed = False
@@ -75,7 +92,7 @@ class createMessage():
     if changed:
       print("changed: "+ str(j))
     boss_message = self.list_boss(send,sql,cfg)
-    bossid = send.sendBoss(boss_message)
+    bossid = send.sendBoss(boss_message,j)
 
     # define lists
     listLM = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet
@@ -101,7 +118,7 @@ class createMessage():
 
     message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
     lockmodul_message = self.list_lockmodul(send,sql,cfg)
-    send.sendOverview(message_overview_rocket + message,newk,j,k,lockmodul_message)
+    send.sendOverview(message_overview_rocket + message,newk,j,k,lockmodul_message,timer,newMessageAfter,lm)
 
 
   def list_boss(self,send,sql,cfg):
@@ -151,10 +168,7 @@ class createMessage():
         lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
         lm+=1
-        if lm == 1:
-          text_modul = "Modul:"
-        else:
-          text_modul = "Module:"
+        text_modul = "Modul:" if lm == 1 else "Module:"
       else:
         stopName = sql.Lname[i]
         latitude = sql.Llatitude[i]
@@ -167,9 +181,6 @@ class createMessage():
         lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         i +=1
         lm+=1
-        if lm == 1:
-          text_modul = "Modul:"
-        else:
-          text_modul = "Module:"
+        text_modul = "Modul:" if lm == 1 else "Module:"
       message_overview_lockmodul = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet + "\n\n" + "<b>Aktuell " + str(lm) + " <a href='" + cfg.chatUrl +"/'>Lock " + text_modul + "</a></b> \n\n"
     return message_overview_lockmodul + lockmodul_message

@@ -7,7 +7,6 @@ class sendMessage():
   oldBossMessage = ""
   oldoverviewMessage = ""
   oldLockmodulMessage = ""
-  oldMessage = ""
   chatID = 0
   singlechatID = 0
   bossid = 0
@@ -69,13 +68,15 @@ class sendMessage():
     outF.close()
     return id.message_id
 
-  def sendBoss(self,message):
-    if self.oldBossMessage == message:
+  def sendBoss(self,boss_message,j):
+    #print("bossMSG: " + boss_message)
+    #print("oldBoss: " + self.oldBossMessage)
+    if self.oldBossMessage == boss_message:
       return self.bossid
-    if len(message) > 5:
+    if len(boss_message) > 5:
       try:
-        id = self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
-        self.oldBossMessage = message
+        id = self.bot.edit_message_text(boss_message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
+        self.oldBossMessage = boss_message
         self.bossid = id.message_id
         return self.bossid
       except:
@@ -84,25 +85,37 @@ class sendMessage():
       self.bot.delete_message(self.singlechatID,self.bossid)
     except:
       print("Boss Single-Message konnte nicht entfernt werden !!")
-    if message == "":
-      message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
+    if boss_message == "":
+      boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
       self.oldBossMessage = ""
-      id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      id = self.bot.send_message(self.chatID, boss_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
       self.bossid = id.message_id 
       return self.bossid
-    id = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
-    self.oldBossMessage = message
+    id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
+    self.oldBossMessage = boss_message
     self.bossid = id.message_id
     return self.bossid
 
-  def sendOverview(self,message,newk,j,k,lockmodul_message):
+  def sendOverview(self,message,newk,j,k,lockmodul_message,timer,newMessageAfter,lm):
     print("rupel: " + str(newk-j))
     print("old R: " + str(k))
-    if self.oldoverviewMessage == message:
-      self.newOverviewSend = 0
+    if lm == 0:
+      message += "\n\n<b>Aktuelle Lockmodule:</b>\n\nEs gibt keine... z\U000000fcnd doch eines"
+    if timer == 0 and timer < newMessageAfter and self.chatID != self.singlechatID:
+      self.newOverviewSend = 1
+    elif timer == 0 or self.oldoverviewMessage == message:
+      if self.chatID != self.singlechatID:
+        self.newOverviewSend = 0
+      else:
+        self.newOverviewSend = 1
       self.sendLockmodul(True,lockmodul_message)
       return message, self.newOverviewSend
-    if len(self.oldoverviewMessage) > len(message) and newk-j == k and self.newOverviewSend == 0 or self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message) and self.newOverviewSend == 0:
+        #LINE 1: timer ist nicht 0 && alte liste hat min 1 zeichen && venue messages in separaten channel
+          #LINE 2: alte liste ist größer als die neue && rüpel anzahl ist identisch && liste wurde nicht neu gesendet
+            #LINE 3: venue messages in separaten channel && alte liste hat min 1 zeichen && alte liste und neue liste sind unterschiedlich && liste wurde nicht neu gesendet
+    if  (timer != 0 and len(self.oldoverviewMessage) > 1 and self.chatID != self.singlechatID) or \
+          (len(self.oldoverviewMessage) > len(message) and newk-j == k and self.newOverviewSend == 0) or \
+            (self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message) and self.newOverviewSend == 0):
       try:
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
         self.oldoverviewMessage = message
@@ -110,6 +123,14 @@ class sendMessage():
         return message
       except:
         print("Konnte Rüpel Liste nicht editieren !!! ID: " + str(self.overviewid.message_id))
+        time.sleep(5)
+        try:
+          self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
+          self.oldoverviewMessage = message
+          self.newOverviewSend = 0
+          return message
+        except:
+          print("2. Versuch die Rüpel Liste zu editieren ist gescheitert !!! ID: " + str(self.overviewid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.overviewid.message_id)
     except:
