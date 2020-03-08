@@ -68,7 +68,7 @@ class sendMessage():
     outF.close()
     return id.message_id
 
-  def sendBoss(self,boss_message,j):
+  def sendBoss(self,boss_message,rb):
     #print("bossMSG: " + boss_message)
     #print("oldBoss: " + self.oldBossMessage)
     if self.oldBossMessage == boss_message:
@@ -96,25 +96,22 @@ class sendMessage():
     self.bossid = id.message_id
     return self.bossid
 
-  def sendOverview(self,message,newk,j,k,lockmodul_message,timer,newMessageAfter,lm):
-    print("rupel: " + str(newk-j))
-    print("old R: " + str(k))
-    if lm == 0:
-      message += "\n\n<b>Aktuelle Lockmodule:</b>\n\nEs gibt keine... z\U000000fcnd doch eines"
+  def sendOverview(self,message,ilen,rb,rr,lockmodul_message,lm,timer,newMessageAfter):
+    print("rupel: " + str(ilen-rb))
+    print("old R: " + str(rr))
+#    if lm == 0:
+#      message += "\n\nAktuelle Lockmodule:\nEs gibt keine... z\U000000fcnd doch eines"
     if timer == 0 and timer < newMessageAfter and self.chatID != self.singlechatID:
       self.newOverviewSend = 1
     elif timer == 0 or self.oldoverviewMessage == message:
-      if self.chatID != self.singlechatID:
-        self.newOverviewSend = 0
-      else:
-        self.newOverviewSend = 1
+      self.newOverviewSend = 0
       self.sendLockmodul(True,lockmodul_message)
       return message, self.newOverviewSend
         #LINE 1: timer ist nicht 0 && alte liste hat min 1 zeichen && venue messages in separaten channel
           #LINE 2: alte liste ist größer als die neue && rüpel anzahl ist identisch && liste wurde nicht neu gesendet
             #LINE 3: venue messages in separaten channel && alte liste hat min 1 zeichen && alte liste und neue liste sind unterschiedlich && liste wurde nicht neu gesendet
     if  (timer != 0 and len(self.oldoverviewMessage) > 1 and self.chatID != self.singlechatID) or \
-          (len(self.oldoverviewMessage) > len(message) and newk-j == k and self.newOverviewSend == 0) or \
+          (len(self.oldoverviewMessage) > len(message) and ilen-rb == rr and self.newOverviewSend == 0) or \
             (self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message) and self.newOverviewSend == 0):
       try:
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)

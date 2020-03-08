@@ -206,6 +206,14 @@ class stopType():
     self.Emoji = self.Eboden
     self.Infotext = self.Tboden
     return self.Emoji + self.Infotext
+  def typ26(self):
+    self.eis +=1
+    self.Eeis = "\U00002744"
+    self.Seis = self.Eeis + " " + str(self.eis) + " "
+    self.Teis = "... Du bewegst dich auf d\U000000fcnnen Eis"
+    self.Emoji = self.Eeis
+    self.Infotext = self.Teis
+    return self.Emoji + self.Infotext
   def typ31(self):
     self.normal +=1
     self.Enormal = "\U0001f518"
@@ -254,14 +262,6 @@ class stopType():
     self.Emoji = self.Ekarpador
     self.Infotext = self.Tkarpador
     return self.Emoji + self.Infotext
-  def typ49(self):
-    self.elektro +=1
-    self.Eelektro = "\U000026a1"
-    self.Selektro = self.Eelektro + " " + str(self.elektro) + " "
-    self.Telektro = "... Du wirst schockiert sein"
-    self.Emoji = self.Eelektro
-    self.Infotext = self.Telektro
-    return self.Emoji + self.Infotext
   def typ48(self):
     self.geist +=1
     self.Egeist  = "\U0001f47b"
@@ -269,6 +269,14 @@ class stopType():
     self.Tgeist = "... Buhu ... Buhuhu"
     self.Emoji = self.Egeist
     self.Infotext = self.Tgeist
+    return self.Emoji + self.Infotext
+  def typ49(self):
+    self.elektro +=1
+    self.Eelektro = "\U000026a1"
+    self.Selektro = self.Eelektro + " " + str(self.elektro) + " "
+    self.Telektro = "... Du wirst schockiert sein"
+    self.Emoji = self.Eelektro
+    self.Infotext = self.Telektro
     return self.Emoji + self.Infotext
   def typ97(self):
     self.fee +=1
@@ -293,14 +301,6 @@ class stopType():
     self.Tunlicht = "... Wo Licht ist, da ist auch Schatten"
     self.Emoji = self.Eunlicht
     self.Infotext = self.Tunlicht
-    return self.Emoji + self.Infotext
-  def typ26(self):
-    self.eis +=1
-    self.Eeis = "\U00002744"
-    self.Seis = self.Eeis + " " + str(self.eis) + " "
-    self.Teis = "... Du bewegst dich auf d\U000000fcnnen Eis"
-    self.Emoji = self.Eeis
-    self.Infotext = self.Teis
     return self.Emoji + self.Infotext
 
   ####Bosse
@@ -382,6 +382,7 @@ class stopType():
       20:self.typ20,
       23:self.typ23,
       25:self.typ25,
+      26:self.typ26,
       31:self.typ31,
       32:self.typ32,
       35:self.typ35,
@@ -393,7 +394,6 @@ class stopType():
       97:self.typ97,
       98:self.typ98,
       99:self.typ99,
-      26:self.typ26,
       41:self.typ41,
       42:self.typ42,
       43:self.typ43,

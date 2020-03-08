@@ -9,10 +9,10 @@ class createMessage():
     Help = helper.Helper()
     stop = stopType.stopType()
     i = 0 # summe gesamt
-    j = 0 # bosse
-    k = 0 # rocket stops
+    rb = 0 # bosse = j
+    rr = 0 # rocket stops = k
     lm= 0
-    newk = 0
+    ilen = 0
     message = ""
     boss_message = send.oldBossMessage
     lockmodul_message = ""
@@ -35,13 +35,14 @@ class createMessage():
     now = datetime.datetime.now()
     print("\n\n-------------------------------------- Update " + cfg.areaName + cfg.areaNumber + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
     print("gefundene Pokestops: " + str(len(sql.name)) + "\n")
-    newk = len(sql.name)
+    ilen = len(sql.name)
 
     for name in sql.Lname:
       stop.getType(sql.Lincident_grunt_type[lm])
       lm +=1
 
     for name in sql.name:
+      stopName = "Unknown Stop" if name is None else name
       if send.list_output.__contains__(name):
         f = open(cfg.areaName+cfg.areaNumber+"output.txt", "r")
             # Split the string based on space delimiter 
@@ -52,18 +53,18 @@ class createMessage():
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
         stop.getType(sql.incident_grunt_type[i])
-        id = list_string[send.list_output.index(name)]
+        id = list_string[send.list_output.index(stopName)]
         # erste nachricht
         if i < 45:
-          message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-        k +=1
-        i +=1
-      elif send.list_boss_output.__contains__(name):
+          message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+        elif i == 46:
+          message += "\n\U00002514 Limit der Liste erreicht...\n"
+        rr +=1
+      elif send.list_boss_output.__contains__(stopName):
         stop.getType(sql.incident_grunt_type[i])
-        j +=1
-        i +=1
+        rb +=1
       else:
-        stopName = sql.name[i]
+        #stopName = sql.name[i]
         latitude = sql.latitude[i]
         longitude = sql.longitude[i]
         stop.getType(sql.incident_grunt_type[i])
@@ -73,26 +74,28 @@ class createMessage():
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext       
         id = send.singleStops(bolt_line,stopName,latitude,longitude,sql.incident_grunt_type[i])
         if sql.incident_grunt_type[i] > 40 and sql.incident_grunt_type[i] < 45:
-          boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-          j +=1
+          boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          rb +=1
         else:
           # update Nachricht
           if i < 45:
-            message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(name) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-        i +=1
-        print("Rocket Stop " + str(i) + "/" + str(len(sql.name)) + " ===> message len: " + str(len(message)))
+            message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          elif i == 46:
+            message += "\n\U00002514 Limit der Liste erreicht...\n"
+        print("Rocket Stop " + str(i+1) + "/" + str(len(sql.name)) + " ===> message len: " + str(len(message)))
+      i +=1
     
-    if j == send.list_boss_output.__len__():
+    if rb == send.list_boss_output.__len__():
       changed = False
       print("Finish !\n")
-      if j > 0:
-        print("Rocket Bosse: "+ str(j))
-      if k > 0:
-        print("Rocket Rüpel: "+ str(k))
+      if rb > 0:
+        print("Rocket Bosse: "+ str(rb))
+      if rr > 0:
+        print("Rocket Rüpel: "+ str(rr))
     if changed:
-      print("changed: "+ str(j))
+      print("changed: "+ str(rb))
     boss_message = self.list_boss(send,sql,cfg)
-    bossid = send.sendBoss(boss_message,j)
+    bossid = send.sendBoss(boss_message,rb)
 
     # define lists
     listLM = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet
@@ -114,11 +117,13 @@ class createMessage():
     if listRB:
       listRB = "B: " + listRB + "\n"
     
-    message_overview_rocket = listLM + listRR + listRB + "\n" + "<b>Aktuell " + str(i-j) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a></b> \n\n"
+    message_overview_rocket = listLM + listRR + listRB + "\n" + "<b>Aktuell " + str(i-rb) + " <a href='" + cfg.chatUrl +"/'>Team Rocket Stops:</a></b> \n\n"
 
-    message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
+    if not rb == 0:
+      message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
+
     lockmodul_message = self.list_lockmodul(send,sql,cfg)
-    send.sendOverview(message_overview_rocket + message,newk,j,k,lockmodul_message,timer,newMessageAfter,lm)
+    send.sendOverview(message_overview_rocket + message,ilen,rb,rr,lockmodul_message,lm,timer,newMessageAfter)
 
 
   def list_boss(self,send,sql,cfg):
@@ -127,8 +132,9 @@ class createMessage():
     Help = helper.Helper()
     stop = stopType.stopType()
     i = 0
-    j = 0
+    rb = 0
     for name in sql.name:
+      stopName = "Unknown Stop" if name is None else name
       if send.list_boss_output.__contains__(name):
         f = open(cfg.areaName+cfg.areaNumber+"boss-output.txt", "r")
               # Split the string based on space delimiter 
@@ -139,11 +145,11 @@ class createMessage():
         zeit = sql.incident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
         stop.getType(sql.incident_grunt_type[i])
-        id = list_string[send.list_boss_output.index(name)]
-        boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-        j +=1
+        id = list_string[send.list_boss_output.index(stopName)]
+        boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+        rb +=1
       i +=1
-      message_overview_boss = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(j) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
+      message_overview_boss = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
     return message_overview_boss + boss_message
 
   def list_lockmodul(self,send,sql,cfg):
@@ -154,6 +160,7 @@ class createMessage():
     i = 0
     lm= 0
     for name in sql.Lname:
+      stopName = "Unknown Stop" if name is None else name
       if send.list_lockmodul_output.__contains__(name):
         f = open(cfg.areaName+cfg.areaNumber+"lockmodul-output.txt", "r")
               # Split the string based on space delimiter 
@@ -164,13 +171,12 @@ class createMessage():
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=1)
         stop.getType(sql.Lincident_grunt_type[i])
-        id = list_string[send.list_lockmodul_output.index(name)]
-        lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-        i +=1
+        id = list_string[send.list_lockmodul_output.index(stopName)]
+        lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         lm+=1
         text_modul = "Modul:" if lm == 1 else "Module:"
       else:
-        stopName = sql.Lname[i]
+        #stopName = sql.Lname[i]
         latitude = sql.Llatitude[i]
         longitude = sql.Llongitude[i]
         stop.getType(sql.Lincident_grunt_type[i])
@@ -178,9 +184,9 @@ class createMessage():
         zeit = zeit + datetime.timedelta(hours=1)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
         id = send.singleStops(bolt_line,stopName,latitude,longitude,sql.Lincident_grunt_type[i])
-        lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + name + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-        i +=1
+        lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         lm+=1
         text_modul = "Modul:" if lm == 1 else "Module:"
+      i +=1
       message_overview_lockmodul = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet + "\n\n" + "<b>Aktuell " + str(lm) + " <a href='" + cfg.chatUrl +"/'>Lock " + text_modul + "</a></b> \n\n"
     return message_overview_lockmodul + lockmodul_message
