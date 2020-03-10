@@ -14,7 +14,6 @@ class sendMessage():
   lockmodulid = 0
   bot = ""
   messageID = 0
-  list_lists = []
   list_lists_ID = []
   list_output = []
   list_message_ID = []
@@ -122,6 +121,7 @@ class sendMessage():
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
         self.oldoverviewMessage = message
         self.newOverviewSend = 0
+        self.sendLockmodul(True,lockmodul_message)
         return message
       except:
         print("Konnte Rüpel Liste nicht editieren !!! ID: " + str(self.overviewid.message_id))
@@ -130,6 +130,7 @@ class sendMessage():
           self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
           self.oldoverviewMessage = message
           self.newOverviewSend = 0
+          self.sendLockmodul(True,lockmodul_message)
           return message
         except:
           print("2. Versuch die Rüpel Liste zu editieren ist gescheitert !!! ID: " + str(self.overviewid.message_id))
