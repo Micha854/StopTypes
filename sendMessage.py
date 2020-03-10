@@ -14,6 +14,8 @@ class sendMessage():
   lockmodulid = 0
   bot = ""
   messageID = 0
+  list_lists = []
+  list_lists_ID = []
   list_output = []
   list_message_ID = []
   list_boss_output = []
@@ -44,7 +46,7 @@ class sendMessage():
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
       self.list_lockmodul_output.append(name)
       self.list_lockmodul_message_ID.append(id.message_id)
-      outF = open(self.areaName+self.areaNumber+"lockmodul-output.txt","w")
+      outF = open(self.areaName+self.areaNumber+"/lockmodul-output.txt","w")
       outF.writelines(str(self.list_lockmodul_message_ID))
       outF.close()
       return id.message_id
@@ -57,13 +59,13 @@ class sendMessage():
     if typ > 40 and typ < 45:
       self.list_boss_output.append(name)
       self.list_boss_message_ID.append(id.message_id)
-      outF = open(self.areaName+self.areaNumber+"boss-output.txt","w")
+      outF = open(self.areaName+self.areaNumber+"/boss-output.txt","w")
       outF.writelines(str(self.list_boss_message_ID))
       outF.close()
       return id.message_id
     self.list_output.append(name)
     self.list_message_ID.append(id.message_id)
-    outF = open(self.areaName+self.areaNumber+"output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"/output.txt","w")
     outF.writelines(str(self.list_message_ID))
     outF.close()
     return id.message_id
@@ -83,6 +85,7 @@ class sendMessage():
         print("Boss Single-Message nicht gefunden")
     try:
       self.bot.delete_message(self.singlechatID,self.bossid)
+      self.list_lists_ID.remove(self.bossid)
     except:
       print("Boss Single-Message konnte nicht entfernt werden !!")
     if boss_message == "":
@@ -91,14 +94,16 @@ class sendMessage():
       id = self.bot.send_message(self.chatID, boss_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
       self.bossid = id.message_id 
       return self.bossid
-    id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
+    id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
     self.oldBossMessage = boss_message
     self.bossid = id.message_id
+    self.list_lists_ID.append(self.bossid)
+    self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
     return self.bossid
 
-  def sendOverview(self,message,ilen,rb,rr,lockmodul_message,lm,timer,newMessageAfter):
-    print("rupel: " + str(ilen-rb))
-    print("old R: " + str(rr))
+  def sendOverview(self,message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter):
+    print("rupel: " + str(rr))
+    print("old R: " + str(old_rr))
 #    if lm == 0:
 #      message += "\n\nAktuelle Lockmodule:\nEs gibt keine... z\U000000fcnd doch eines"
     if timer == 0 and timer < newMessageAfter and self.chatID != self.singlechatID:
@@ -111,7 +116,7 @@ class sendMessage():
           #LINE 2: alte liste ist größer als die neue && rüpel anzahl ist identisch && liste wurde nicht neu gesendet
             #LINE 3: venue messages in separaten channel && alte liste hat min 1 zeichen && alte liste und neue liste sind unterschiedlich && liste wurde nicht neu gesendet
     if  (timer != 0 and len(self.oldoverviewMessage) > 1 and self.chatID != self.singlechatID) or \
-          (len(self.oldoverviewMessage) > len(message) and ilen-rb == rr and self.newOverviewSend == 0) or \
+          (len(self.oldoverviewMessage) > len(message) and old_rr == rr and self.newOverviewSend == 0) or \
             (self.chatID != self.singlechatID and len(self.oldoverviewMessage) > 1 and len(self.oldoverviewMessage) != len(message) and self.newOverviewSend == 0):
       try:
         self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
@@ -130,6 +135,7 @@ class sendMessage():
           print("2. Versuch die Rüpel Liste zu editieren ist gescheitert !!! ID: " + str(self.overviewid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.overviewid.message_id)
+      self.list_lists_ID.remove(self.overviewid.message_id)
     except:
       print("Rüpel Liste konnte nicht entfernt werden !!")
     if message == "":
@@ -139,6 +145,9 @@ class sendMessage():
       self.newOverviewSend = 1
       return self.newOverviewSend
     self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
+    self.list_lists_ID.append(self.overviewid.message_id)
+    self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
+
     self.oldoverviewMessage = message
     self.newOverviewSend = 1
     self.sendLockmodul(False,lockmodul_message)
@@ -156,12 +165,22 @@ class sendMessage():
         print("Konnte Lockmodul Liste nicht edetieren !!! ID: " + str(self.lockmodulid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.lockmodulid.message_id)
+      self.list_lists_ID.remove(self.lockmodulid.message_id)
       self.oldLockmodulMessage = lockmodul_message
     except:
       print("\nLockmodul Liste konnte nicht entfernt werden !!")
     if len(lockmodul_message) > 5:
       self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=False) 
+      self.list_lists_ID.append(self.lockmodulid.message_id)
+      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
       self.oldLockmodulMessage = lockmodul_message
+
+  
+  def clearOldList (self, areaName, areaNumber, list_lists_ID):
+    filename_list_lists_ID = self.areaName+self.areaNumber+"/lists.txt"
+    outF = open(filename_list_lists_ID,"w")
+    outF.writelines(str(self.list_lists_ID))
+    outF.close()
 
   def clearOutputList(self,encounter,lockmodul):
     i = 0
@@ -176,7 +195,7 @@ class sendMessage():
         except:
           print("Rupel Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+self.areaNumber+"output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"/output.txt","w")
     outF.writelines(str(self.list_message_ID))
     outF.close()
     i = 0
@@ -190,7 +209,7 @@ class sendMessage():
         except:
           print("BOSS Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+self.areaNumber+"boss-output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"/boss-output.txt","w")
     outF.writelines(str(self.list_boss_message_ID))
     outF.close()
     i = 0
@@ -204,7 +223,6 @@ class sendMessage():
         except:
           print("Lockmodul Nachricht konnte nicht entfernt werden")
       i +=1
-    outF = open(self.areaName+self.areaNumber+"lockmodul-output.txt","w")
+    outF = open(self.areaName+self.areaNumber+"/lockmodul-output.txt","w")
     outF.writelines(str(self.list_lockmodul_message_ID))
     outF.close()
-

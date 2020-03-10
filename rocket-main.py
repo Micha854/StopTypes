@@ -5,6 +5,7 @@ import sendMessage
 import sys
 import time
 import clear
+import os
 
 cfg = config.Config()
 try:
@@ -12,19 +13,25 @@ try:
 except:
   cfg.readConfig("rocket-config.ini")
 
+if not os.path.exists(cfg.areaName+cfg.areaNumber):
+    os.mkdir(cfg.areaName+cfg.areaNumber)
+    print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " Created ")
+else:    
+    print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " already exists")
+
 Sql = sql.Sql()
 result = Sql.myGeo(cfg)
 
-fence_file = open(cfg.areaName+cfg.areaNumber+"geofence.txt", "w")
+fence_file = open(cfg.areaName+cfg.areaNumber+"/geofence.txt", "w")
 write_cords = fence_file.write(result[cfg.areaName])
 fence_file.close()
 
-fence_file = open(cfg.areaName+cfg.areaNumber+"geofence.txt", "r")
+fence_file = open(cfg.areaName+cfg.areaNumber+"/geofence.txt", "r")
 geofence = fence_file.read()
 fence_file.close()
 
 clear = clear.Clear()
-clear.clear(cfg.token,cfg.singlechatId,cfg)
+clear.clear(cfg.token,cfg.chatId,cfg.singlechatId,cfg)
 send = sendMessage.sendMessage()
 send.setConfig(cfg.token,cfg.singlechatId,cfg.chatId,cfg.areaName,cfg.areaNumber)
 
@@ -36,7 +43,7 @@ timer = 0
 
 while 1 == 1:
   if timer > newMessageAfter:
-    timer = sleep_time
+    timer = 0
   else:
     timer +=sleep_time
     
