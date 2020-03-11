@@ -1,5 +1,15 @@
-# StopTypes
+## StopTypes on Telegram
 
-Dieses Script zeigt über Telegram verschickte Nachrichten Team Rocket Stops und Lockmodule an
+![Rocket](https://raw.githubusercontent.com/Micha854/StopTypes/rocket2message/images/rocket2.png)
 
-Readme wird demnächst erweitert um genauere Angaben zur Installation bereit zu stellen
+## Install Telebot
+```pip3 -r requirements.txt```
+
+## Config
+
+- rename `config_example.ini` to `config.ini`
+- set your fence name without [ ] (this load the geofence from MAD database)
+
+### Start Script
+
+```python3 rocket-main.py config.ini```
