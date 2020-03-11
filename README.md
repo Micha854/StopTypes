@@ -3,7 +3,7 @@
 ![Rocket](https://raw.githubusercontent.com/Micha854/StopTypes/rocket2message/images/rocket2.png)
 
 ## Install Telebot
-```pip3 -r requirements.txt```
+```pip3 -r install requirements.txt```
 
 ## Config
 
