@@ -62,12 +62,13 @@ class sendMessage():
       outF.writelines(str(self.list_boss_message_ID))
       outF.close()
       return id.message_id
-    self.list_output.append(name)
-    self.list_message_ID.append(id.message_id)
-    outF = open(self.areaName+self.areaNumber+"/output.txt","w")
-    outF.writelines(str(self.list_message_ID))
-    outF.close()
-    return id.message_id
+    else:
+      self.list_output.append(name)
+      self.list_message_ID.append(id.message_id)
+      outF = open(self.areaName+self.areaNumber+"/output.txt","w")
+      outF.writelines(str(self.list_message_ID))
+      outF.close()
+      return id.message_id
 
   def sendBoss(self,boss_message,rb):
     #print("bossMSG: " + boss_message)
