@@ -18,7 +18,7 @@ if not os.path.exists(cfg.areaName+cfg.areaNumber):
     print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " Created ")
 else:    
     print("Temp Directory " , cfg.areaName+cfg.areaNumber ,  " already exists")
-
+    
 Sql = sql.Sql()
 result = Sql.myGeo(cfg)
 
@@ -47,8 +47,8 @@ while 1 == 1:
   else:
     timer +=sleep_time
     
-  Sql.lockmodulSQL(cfg,"SELECT name,latitude,longitude,active_fort_modifier,lure_expiration FROM pokestop where timestampdiff(SECOND,lure_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY lure_expiration,name")
-  Sql.rocketSQL(cfg,"SELECT name,latitude,longitude,incident_grunt_type,incident_expiration FROM pokestop where timestampdiff(SECOND,incident_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY incident_expiration,name")
+  Sql.lockmodulSQL(cfg,"SELECT name,latitude,longitude,active_fort_modifier,lure_expiration FROM pokestop where timestampdiff(SECOND,lure_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY lure_expiration,active_fort_modifier,name")
+  Sql.rocketSQL(cfg,"SELECT name,latitude,longitude,incident_grunt_type,incident_expiration FROM pokestop where timestampdiff(SECOND,incident_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY incident_expiration,incident_grunt_type,name")
   send.clearOutputList(Sql.name,Sql.Lname)
   create = createMessage.createMessage()
   create.create(send,Sql,cfg,timer,newMessageAfter)

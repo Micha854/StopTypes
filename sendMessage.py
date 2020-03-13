@@ -35,8 +35,8 @@ class sendMessage():
     self.chatID = chatID
     self.bot = telebot.TeleBot(token)
 
-  def singleStops(self,bolt_line,name,latitude,longitude,typ):
-    if typ > 500 and typ < 505:
+  def singleStops(self,bolt_line,name,latitude,longitude,typ,lm_types,rb_types):
+    if typ in (lm_types):
       try:
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
       except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
@@ -55,7 +55,7 @@ class sendMessage():
         print ("Fehler beim senden von SingleStop mit Ping")
         time.sleep(5)
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
-    if typ > 40 and typ < 45:
+    if typ in (rb_types):
       self.list_boss_output.append(name)
       self.list_boss_message_ID.append(id.message_id)
       outF = open(self.areaName+self.areaNumber+"/boss-output.txt","w")
