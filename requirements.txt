@@ -1,2 +1,4 @@
-MySQLdb
+mysql-connector
+mysqlclient
+pyMySQLdb
 pyTelegramBotAPI
