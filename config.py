@@ -8,6 +8,8 @@ class Config():
   database = ""
   user = ""
   password = ""
+  rocketStops = bool
+  lureModule = bool
   token = ""
   singlechatId = ""
   singlechatUrl = ""
@@ -26,6 +28,9 @@ class Config():
     self.database = parser.get('Mysql', 'database')
     self.user = parser.get('Mysql', 'user')
     self.password = parser.get('Mysql', 'password')
+
+    self.rocketStops = parser.getboolean("Options", "rocketStops")
+    self.lureModule = parser.getboolean("Options", "lureModule")
 
     self.token = parser.get('Bot Settings', 'token')
     self.singlechatId = parser.get('Bot Settings', 'singlechat_id')

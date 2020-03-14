@@ -59,7 +59,7 @@ class createMessage():
 
     for name in sql.name:
       stopName = "Unknown Stop" if name is None else name
-      if send.list_output.__contains__(name):
+      if send.list_output.__contains__(name) and cfg.rocketStops == True:
         f = open(cfg.areaName+cfg.areaNumber+"/output.txt", "r")
             # Split the string based on space delimiter 
         list_string = f.read()
@@ -90,31 +90,32 @@ class createMessage():
         if sql.incident_grunt_type[i] in (rb_types):
           rb +=1
       else:
-        latitude = sql.latitude[i]
-        longitude = sql.longitude[i]
-        stop.getType(sql.incident_grunt_type[i])
-        zeit = sql.incident_expiration[i]
-        zeit = zeit + datetime.timedelta(hours=1)
-        #print("... verarbeite Pokestop: " + str(stopName))
+        if cfg.rocketStops == True or sql.incident_grunt_type[i] in (rb_types):
+          latitude = sql.latitude[i]
+          longitude = sql.longitude[i]
+          stop.getType(sql.incident_grunt_type[i])
+          zeit = sql.incident_expiration[i]
+          zeit = zeit + datetime.timedelta(hours=1)
+          #print("... verarbeite Pokestop: " + str(stopName))
 
-        bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
-        try:
-            id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
-        except:
-            print ("Fehler beim senden von SingleStop mit Ping")
-            time.sleep(5)
-            id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
-        # erste Nachricht
-        if sql.incident_grunt_type[i] in (rb_types):
-          print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Boss")
-          rb +=1
-        else:
-          if rr < rr_limit:
-            message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
-          #elif rr == rr_limit+1:
-          #  message += "\n\U00002514 Limit der Liste erreicht...\n"
-          print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Rüpel" + " ===> message len: " + str(len(message)))
-          rr +=1
+          bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
+          try:
+              id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
+          except:
+              print ("Fehler beim senden von SingleStop mit Ping")
+              time.sleep(5)
+              id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
+          # erste Nachricht
+          if sql.incident_grunt_type[i] in (rb_types):
+            print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Boss")
+            rb +=1
+          else:
+            if rr < rr_limit:
+              message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+            #elif rr == rr_limit+1:
+            #  message += "\n\U00002514 Limit der Liste erreicht...\n"
+            print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Rüpel" + " ===> message len: " + str(len(message)))
+            rr +=1
       i +=1
     
     if rb == send.list_boss_output.__len__():
@@ -132,7 +133,7 @@ class createMessage():
     # define lists
     listLM = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet
     listRR = stop.Srelaxo + stop.Skarpador + stop.Skanto + stop.Snormal + stop.Swasser + stop.Sfeuer + stop.Sdrache + stop.Sflug + stop.Spflanze + stop.Skaefer + stop.Sboden + stop.Sgestein + stop.Sgift + stop.Spsycho + stop.Skampf + stop.Seis + stop.Sgeist + stop.Selektro + stop.Sfee + stop.Sstahl + stop.Sunlicht
-    listRB = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni
+    listRB = stop.Scliff + stop.Sarlo + stop.Ssierra + stop.Sgiovanni
 
     print("\nListen:\n")
 
@@ -155,7 +156,8 @@ class createMessage():
       message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
 
     lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit)
-    send.sendOverview(message_overview_rocket + message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter)
+    if cfg.rocketStops == True:
+      send.sendOverview(message_overview_rocket + message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter)
 
 
   def list_boss(self,send,sql,cfg,rb_types,rb_limit):
@@ -185,7 +187,7 @@ class createMessage():
             boss_message += "\n\U00002514 Limit der Liste erreicht...\n"
           rb +=1
       i +=1
-      message_overview_boss = stop.Sarlo + stop.Scliff + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
+      message_overview_boss = stop.Scliff + stop.Sarlo + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
     return message_overview_boss + boss_message
 
   def list_lockmodul(self,send,sql,cfg,lm_types,rb_types,lm_limit):

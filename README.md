@@ -12,4 +12,8 @@
 
 ### Start Script
 
-```python3 rocket-main.py config.ini```
+```python3 rocket-main.py```
+
+optional, you can put the config parameter
+
+```python3 rocket-main.py myconfig.ini```
