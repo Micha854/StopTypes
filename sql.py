@@ -26,7 +26,7 @@ class Sql():
     cursor.execute("SELECT fence_data FROM `settings_geofence`")
     result = cursor.fetchall()
 
-    x = str(result).replace("[('[", "").replace("]',)]", "").replace('"[', "").replace(']\',)', "").replace(']"', "").replace("('[", "").split(""", """)
+    x = str(result).replace("(('[", "").replace("]',))", "").replace('"[', "").replace(']\',)', "").replace(']"', "").replace("('[", "").split(""", """)
     x = tuple(x)	
     geofence_dict=dict([])
     geofence_cords = "000000"
