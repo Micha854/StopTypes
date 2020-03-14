@@ -22,6 +22,7 @@ else:
 Sql = sql.Sql()
 result = Sql.myGeo(cfg)
 
+#if not os.path.isfile(cfg.areaName+cfg.areaNumber+"/geofence.txt"):
 fence_file = open(cfg.areaName+cfg.areaNumber+"/geofence.txt", "w")
 write_cords = fence_file.write(result[cfg.areaName])
 fence_file.close()
