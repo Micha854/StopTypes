@@ -11,7 +11,7 @@ cfg = config.Config()
 try:
   cfg.readConfig(sys.argv[1])
 except:
-  cfg.readConfig("rocket-config.ini")
+  cfg.readConfig("config.ini")
 
 if not os.path.exists(cfg.areaName+cfg.areaNumber):
     os.mkdir(cfg.areaName+cfg.areaNumber)
