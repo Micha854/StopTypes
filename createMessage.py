@@ -21,6 +21,8 @@ class createMessage():
     Help = helper.Helper()
     stop = stopType.stopType()
     i = 0
+    rb_sum = 0
+    rr_sum = 0
     rb = 0
     rr = 0
     old_rr = 0
@@ -56,6 +58,13 @@ class createMessage():
     for name in sql.Lname:
       stop.getType(sql.Lincident_grunt_type[lm])
       lm +=1
+
+    # Output for Console
+    for typ in sql.incident_grunt_type:
+      if typ in (rb_types):
+        rb_sum +=1
+      else:
+        rr_sum +=1
 
     for name in sql.name:
       stopName = "Unknown Stop" if name is None else name
@@ -107,14 +116,14 @@ class createMessage():
               id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
           # erste Nachricht
           if sql.incident_grunt_type[i] in (rb_types):
-            print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Boss")
+            print("Send " + str(rb+1) + "/" + str(rb_sum) + " ===> " + "Rocket BOSSE: " + str(stopName))
             rb +=1
           else:
             if rr < rr_limit:
               message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
             #elif rr == rr_limit+1:
             #  message += "\n\U00002514 Limit der Liste erreicht...\n"
-            print("Stop: " + str(i+1) + "/" + str(len(sql.name)) + " ===> " + str(stopName) + " ===> Rocket Rüpel" + " ===> message len: " + str(len(message)))
+            print("Send " + str(rr+1) + "/" + str(rr_sum) + " ===> " + "Rocket RÜPEL: " + str(stopName))
             rr +=1
       i +=1
     
