@@ -130,6 +130,10 @@ class createMessage():
     boss_message = self.list_boss(send,sql,cfg,rb_types,rb_limit)
     bossid = send.sendBoss(boss_message,rb)
 
+    if cfg.rocketStops == False and cfg.lureModule == True:
+      lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit)
+      send.sendLockmodul(True,lockmodul_message)
+
     # define lists
     listLM = stop.Sstandard + stop.Sgletscher + stop.Smoos + stop.Smagnet
     listRR = stop.Srelaxo + stop.Skarpador + stop.Skanto + stop.Snormal + stop.Swasser + stop.Sfeuer + stop.Sdrache + stop.Sflug + stop.Spflanze + stop.Skaefer + stop.Sboden + stop.Sgestein + stop.Sgift + stop.Spsycho + stop.Skampf + stop.Seis + stop.Sgeist + stop.Selektro + stop.Sfee + stop.Sstahl + stop.Sunlicht
