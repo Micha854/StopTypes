@@ -92,7 +92,9 @@ class sendMessage():
       boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
       self.oldBossMessage = ""
       id = self.bot.send_message(self.chatID, boss_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
-      self.bossid = id.message_id 
+      self.bossid = id.message_id
+      self.list_lists_ID.append(self.bossid)
+      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID) 
       return self.bossid
     id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
     self.oldBossMessage = boss_message
@@ -143,7 +145,9 @@ class sendMessage():
     if message == "":
       message = "Aktuell keine Rockestops vorhanden"
       self.oldoverviewMessage = ""
-      self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
+      self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      self.list_lists_ID.append(self.overviewid.message_id)
+      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID) 
       self.newOverviewSend = 1
       return self.newOverviewSend
     self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 

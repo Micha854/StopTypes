@@ -9,12 +9,12 @@ class createMessage():
     
 ### can be configured custom ###
     
-    rb_limit = 48               # Boss Limit
-    rr_limit = 45               # Rüpel Limit
-    lm_limit = 48               # Lockmodul Limit
-    rb_types = 41,42,43,44      # Boss Types
-    lm_types = 501,502,503,504  # Lockmodul Types
-    newSortAfterLimit = True    # True or False
+    rb_limit = 48                 # Boss Limit
+    rr_limit = 45                 # Rüpel Limit
+    lm_limit = 48                 # Lockmodul Limit
+    rb_types = [41,42,43,44]      # Boss Types
+    lm_types = [501,502,503,504]  # Lockmodul Types
+    newSortAfterLimit = True      # True or False
 
 ################################
 
@@ -34,11 +34,6 @@ class createMessage():
     
     if timer > newMessageAfter:
       timer = 0
-      print("=== NEW SEND ===")
-    else:
-      print(str(timer))
-      print("\n")
-      print(str(newMessageAfter))
     
     if cfg.chatId != cfg.singlechatId:
       newSend = newMessageAfter - timer
