@@ -5,7 +5,7 @@ import time
 import json
 
 class createMessage():
-  def create(self,send,sql,cfg,timer,newMessageAfter):
+  def create(self,send,sql,cfg,timer,newMessageAfter,gmt):
     
 ### can be configured custom ###
     
@@ -71,7 +71,7 @@ class createMessage():
         f.close()
         list_string = list_string.split(', ') 
         zeit = sql.incident_expiration[i]
-        zeit = zeit + datetime.timedelta(hours=1)
+        zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_output.index(name)]
         # update nachricht
@@ -99,7 +99,7 @@ class createMessage():
           longitude = sql.longitude[i]
           stop.getType(sql.incident_grunt_type[i])
           zeit = sql.incident_expiration[i]
-          zeit = zeit + datetime.timedelta(hours=1)
+          zeit = zeit + datetime.timedelta(hours=gmt)
           #print("... verarbeite Pokestop: " + str(stopName))
 
           bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
@@ -131,11 +131,11 @@ class createMessage():
         print("Rocket Rüpel: "+ str(rr))
     if changed:
       print("changed: "+ str(rb))
-    boss_message = self.list_boss(send,sql,cfg,rb_types,rb_limit)
+    boss_message = self.list_boss(send,sql,cfg,rb_types,rb_limit,gmt)
     bossid = send.sendBoss(boss_message,rb)
 
     if cfg.rocketStops == False and cfg.lureModule == True:
-      lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit)
+      lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit,gmt)
       send.sendLockmodul(True,lockmodul_message)
 
     # define lists
@@ -163,12 +163,12 @@ class createMessage():
     if not rb == 0:
       message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
 
-    lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit)
+    lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit,gmt)
     if cfg.rocketStops == True:
       send.sendOverview(message_overview_rocket + message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter)
 
 
-  def list_boss(self,send,sql,cfg,rb_types,rb_limit):
+  def list_boss(self,send,sql,cfg,rb_types,rb_limit,gmt):
     boss_message = ""
     message_overview_boss = ""
     Help = helper.Helper()
@@ -185,7 +185,7 @@ class createMessage():
         f.close()
         list_string = list_string.split(', ') 
         zeit = sql.incident_expiration[i]
-        zeit = zeit + datetime.timedelta(hours=1)
+        zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_boss_output.index(name)]
         if sql.incident_grunt_type[i] in (rb_types):
@@ -198,7 +198,7 @@ class createMessage():
       message_overview_boss = stop.Scliff + stop.Sarlo + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
     return message_overview_boss + boss_message
 
-  def list_lockmodul(self,send,sql,cfg,lm_types,rb_types,lm_limit):
+  def list_lockmodul(self,send,sql,cfg,lm_types,rb_types,lm_limit,gmt):
     lockmodul_message = ""
     message_overview_lockmodul = ""
     Help = helper.Helper()
@@ -215,7 +215,7 @@ class createMessage():
         f.close()
         list_string = list_string.split(', ') 
         zeit = sql.Lincident_expiration[i]
-        zeit = zeit + datetime.timedelta(hours=1)
+        zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.Lincident_grunt_type[i])
         id = list_string[send.list_lockmodul_output.index(name)]
         if lm < lm_limit:
@@ -229,7 +229,7 @@ class createMessage():
         longitude = sql.Llongitude[i]
         stop.getType(sql.Lincident_grunt_type[i])
         zeit = sql.Lincident_expiration[i]
-        zeit = zeit + datetime.timedelta(hours=1)
+        zeit = zeit + datetime.timedelta(hours=gmt)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
         id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
         if lm < lm_limit:

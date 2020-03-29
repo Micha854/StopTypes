@@ -7,6 +7,13 @@ import time
 import clear
 import os
 
+from datetime import datetime
+millis = 1288483950000
+ts = millis * 1e-3
+utc_offset = datetime.fromtimestamp(ts) - datetime.utcfromtimestamp(ts)
+offset = str(utc_offset)
+gmt = int(offset[0])
+
 cfg = config.Config()
 try:
   cfg.readConfig(sys.argv[1])
@@ -48,10 +55,10 @@ while 1 == 1:
   else:
     timer +=sleep_time
     
-  Sql.lockmodulSQL(cfg,"SELECT name,latitude,longitude,active_fort_modifier,lure_expiration FROM pokestop where timestampdiff(SECOND,lure_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY lure_expiration,active_fort_modifier,name")
-  Sql.rocketSQL(cfg,"SELECT name,latitude,longitude,incident_grunt_type,incident_expiration FROM pokestop where timestampdiff(SECOND,incident_expiration,NOW())<3600 AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY incident_expiration,incident_grunt_type,name")
+  Sql.lockmodulSQL(cfg,"SELECT name,latitude,longitude,active_fort_modifier,lure_expiration FROM pokestop where lure_expiration > utc_timestamp() AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY lure_expiration,active_fort_modifier,name")
+  Sql.rocketSQL(cfg,"SELECT name,latitude,longitude,incident_grunt_type,incident_expiration FROM pokestop where incident_expiration > utc_timestamp() AND ST_CONTAINS(st_geomfromtext('POLYGON(( " + geofence + " ))') , point(pokestop.latitude,pokestop.longitude)) ORDER BY incident_expiration,incident_grunt_type,name")
   send.clearOutputList(Sql.name,Sql.Lname)
   create = createMessage.createMessage()
-  create.create(send,Sql,cfg,timer,newMessageAfter)
+  create.create(send,Sql,cfg,timer,newMessageAfter,gmt)
   time.sleep(sleep_time)
   #send.send(create.message)
