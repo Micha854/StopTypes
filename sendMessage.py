@@ -82,22 +82,18 @@ class sendMessage():
         self.bossid = id.message_id
         return self.bossid
       except:
-        print("Boss Single-Message nicht gefunden")
+        print("Konnte Boss Liste nicht editieren !!! ID: " + str(self.bossid))
     try:
-      self.bot.delete_message(self.singlechatID,self.bossid)
+      self.bot.delete_message(self.chatID,self.bossid)
       self.list_lists_ID.remove(self.bossid)
     except:
-      print("Boss Single-Message konnte nicht entfernt werden !!")
+      print("Boss Liste konnte nicht entfernt werden !!")
     if boss_message == "":
       boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
       self.oldBossMessage = ""
-      id = self.bot.send_message(self.chatID, boss_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
-      self.bossid = id.message_id
-      self.list_lists_ID.append(self.bossid)
-      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID) 
-      return self.bossid
+    else:
+      self.oldBossMessage = boss_message
     id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
-    self.oldBossMessage = boss_message
     self.bossid = id.message_id
     self.list_lists_ID.append(self.bossid)
     self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)

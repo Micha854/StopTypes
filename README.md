@@ -1,6 +1,6 @@
-## StopTypes on Telegram
+## TeamRocket on Telegram
 
-![Rocket](https://raw.githubusercontent.com/Micha854/StopTypes/rocket2message/images/rocket2.png)
+#### HELP ON DISCORD: https://discord.gg/cFs9Nkr
 
 ## Install Telebot
 ```pip3 -r install requirements.txt```
@@ -17,3 +17,6 @@
 optional, you can put the config parameter
 
 ```python3 rocket-main.py myconfig.ini```
+
+## Demo
+![Rocket](https://raw.githubusercontent.com/Micha854/StopTypes/rocket2message/images/rocket2.png)
