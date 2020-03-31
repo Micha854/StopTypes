@@ -8,11 +8,30 @@ import clear
 import os
 
 from datetime import datetime
-millis = 1288483950000
-ts = millis * 1e-3
-utc_offset = datetime.fromtimestamp(ts) - datetime.utcfromtimestamp(ts)
-offset = str(utc_offset)
-gmt = int(offset[0])
+timestamp = time.time()
+time_now = datetime.fromtimestamp(timestamp)
+time_utc = datetime.utcfromtimestamp(timestamp)
+utc_offset_secs = (time_now - time_utc).total_seconds()
+
+# Flag variable to hold if the current time is behind UTC.
+is_behind_utc = False
+
+# If the current time is behind UTC convert the offset
+# seconds to a positive value and set the flag variable.
+if utc_offset_secs < 0:
+    is_behind_utc = True
+    utc_offset_secs *= -1
+
+# Build a UTC offset string suitable for use in a timestamp.
+
+if is_behind_utc:
+    pos_neg_prefix = "-"
+else:
+    pos_neg_prefix = "+"
+
+utc_offset = time.gmtime(utc_offset_secs)
+utc_offset_fmt = time.strftime("%H", utc_offset)
+gmt = int(pos_neg_prefix + utc_offset_fmt)
 
 cfg = config.Config()
 try:

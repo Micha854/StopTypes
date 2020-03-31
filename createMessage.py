@@ -107,7 +107,7 @@ class createMessage():
               id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
           except:
               print ("Fehler beim senden von SingleStop mit Ping")
-              time.sleep(5)
+              time.sleep(60)
               id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
           # erste Nachricht
           if sql.incident_grunt_type[i] in (rb_types):
@@ -231,7 +231,12 @@ class createMessage():
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=gmt)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
-        id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+        try:
+          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+        except:
+          print ("Fehler beim senden von SingleStop mit Lockmodule")
+          time.sleep(60)
+          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
         if lm < lm_limit:
           lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         elif lm == lm_limit+1:
