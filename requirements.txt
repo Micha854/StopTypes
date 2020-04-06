@@ -1,7 +1,6 @@
 configparser==4.0.2
 mysqlclient==1.4.6
-pkg-resources==0.0.0
+telebot==0.0.3
 pyTelegramBotAPI==3.6.7
 requests==2.7.0
 six==1.14.0
-telebot==0.0.3
