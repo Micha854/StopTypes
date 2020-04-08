@@ -39,10 +39,10 @@ class sendMessage():
     if typ in (lm_types):
       try:
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
-      except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
-        print ("Fehler beim senden von SingleStop ohne Ping")
-        time.sleep(5)
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
+      except:
+        print(".................... wait 30 seconds, too many messages")
+        sleep = time.sleep(30)
+        return sleep
       self.list_lockmodul_output.append(name)
       self.list_lockmodul_message_ID.append(id.message_id)
       outF = open(self.areaName+self.areaNumber+"/lockmodul-output.txt","w")
@@ -50,11 +50,11 @@ class sendMessage():
       outF.close()
       return id.message_id
     try:
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
-    except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
-        print ("Fehler beim senden von SingleStop mit Ping")
-        time.sleep(5)
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
+      id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
+    except:
+      print(".................... wait 30 seconds, too many messages")
+      sleep = time.sleep(30)
+      return sleep
     if typ in (rb_types):
       self.list_boss_output.append(name)
       self.list_boss_message_ID.append(id.message_id)

@@ -47,7 +47,7 @@ class createMessage():
 
     #now time
     now = datetime.datetime.now()
-    print("\n\n-------------------------------------- Update " + cfg.areaName + cfg.areaNumber + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " --------------------------------------\n")
+    print("\n\n####################==========\\ *** Rocket *** Update " + cfg.areaName + " " + now.strftime("%m/%d/%Y, %H:%M:%S") + " /==========####################\n")
     print("gefundene Pokestops: " + str(len(sql.name)) + "\n")
 
     for name in sql.Lname:
@@ -74,6 +74,12 @@ class createMessage():
         zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_output.index(name)]
+
+        if cfg.singlechatId:
+          linked = cfg.singlechatUrl + "/" + str(id)
+        else:
+          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
         # update nachricht
         if sql.incident_grunt_type[i] not in (rb_types):
           if newSortAfterLimit == True:
@@ -81,10 +87,10 @@ class createMessage():
               message = "\u270BLimit der Liste erreicht...\n\U00002514 <b>" + str(rr_limit-rr_list_limit) + "</b> Stops ausgeblendet\n\n"
               rr_limit+=1
             else:
-              message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+              message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
           else:
             if rr < rr_limit:
-              message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+              message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
             elif rr == rr_limit+1:
               message += "\n\U00002514 Limit der Liste erreicht...\n"
           rr +=1
@@ -103,19 +109,20 @@ class createMessage():
           #print("... verarbeite Pokestop: " + str(stopName))
 
           bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
-          try:
-              id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
-          except:
-              print ("Fehler beim senden von SingleStop mit Ping")
-              time.sleep(60)
-              id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
+          
+          if cfg.singlechatId:
+            id = send.singleStops(bolt_line,name,latitude,longitude,sql.incident_grunt_type[i],lm_types,rb_types)
+            linked = cfg.singlechatUrl + "/" + str(id)
+          else:
+            linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
           # erste Nachricht
           if sql.incident_grunt_type[i] in (rb_types):
             print("Send " + str(rb+1) + "/" + str(rb_sum) + " ===> " + "Rocket BOSSE: " + str(stopName))
             rb +=1
           else:
             if rr < rr_limit:
-              message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+              message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
             #elif rr == rr_limit+1:
             #  message += "\n\U00002514 Limit der Liste erreicht...\n"
             print("Send " + str(rr+1) + "/" + str(rr_sum) + " ===> " + "Rocket RÜPEL: " + str(stopName))
@@ -188,9 +195,28 @@ class createMessage():
         zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.incident_grunt_type[i])
         id = list_string[send.list_boss_output.index(name)]
+
+        if cfg.singlechatId:
+          linked = cfg.singlechatUrl + "/" + str(id)
+        else:
+          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
         if sql.incident_grunt_type[i] in (rb_types):
           if rb < rb_limit:
-            boss_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+            boss_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          elif rb == rb_limit+1:
+            boss_message += "\n\U00002514 Limit der Liste erreicht...\n"
+          rb +=1
+      elif not cfg.singlechatId:
+        stop.getType(sql.incident_grunt_type[i])
+        zeit = sql.incident_expiration[i]
+        zeit = zeit + datetime.timedelta(hours=gmt)
+        
+        linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
+        if sql.incident_grunt_type[i] in (rb_types):
+          if rb < rb_limit:
+            boss_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
           elif rb == rb_limit+1:
             boss_message += "\n\U00002514 Limit der Liste erreicht...\n"
           rb +=1
@@ -218,8 +244,14 @@ class createMessage():
         zeit = zeit + datetime.timedelta(hours=gmt)
         stop.getType(sql.Lincident_grunt_type[i])
         id = list_string[send.list_lockmodul_output.index(name)]
+
+        if cfg.singlechatId:
+          linked = cfg.singlechatUrl + "/" + str(id)
+        else:
+          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
         if lm < lm_limit:
-          lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          lockmodul_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         elif lm == lm_limit+1:
           lockmodul_message += "\n\U00002514 Limit der Liste erreicht...\n"
         lm+=1
@@ -231,14 +263,15 @@ class createMessage():
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=gmt)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
-        try:
+        
+        if cfg.singlechatId:
           id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
-        except:
-          print ("Fehler beim senden von SingleStop mit Lockmodule")
-          time.sleep(60)
-          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+          linked = cfg.singlechatUrl + "/" + str(id)
+        else:
+          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+
         if lm < lm_limit:
-          lockmodul_message += stop.Emoji + "<a href='" + cfg.singlechatUrl +"/" + str(id) + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
+          lockmodul_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
         elif lm == lm_limit+1:
           lockmodul_message += "\n\U00002514 Limit der Liste erreicht...\n"
         lm+=1
