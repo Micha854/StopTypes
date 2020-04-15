@@ -75,24 +75,22 @@ class sendMessage():
     #print("oldBoss: " + self.oldBossMessage)
     if self.oldBossMessage == boss_message:
       return self.bossid
-    if len(boss_message) > 5:
-      try:
-        id = self.bot.edit_message_text(boss_message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
-        self.oldBossMessage = boss_message
-        self.bossid = id.message_id
-        return self.bossid
-      except:
-        print("Konnte Boss Liste nicht editieren !!! ID: " + str(self.bossid))
+    if rb == 0:
+      boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
+      self.oldBossMessage = ""
+    else:
+      self.oldBossMessage = boss_message
+    try:
+      id = self.bot.edit_message_text(boss_message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
+      self.bossid = id.message_id
+      return self.bossid
+    except:
+      print("Konnte Boss Liste nicht editieren !!! ID: " + str(self.bossid))
     try:
       self.bot.delete_message(self.chatID,self.bossid)
       self.list_lists_ID.remove(self.bossid)
     except:
       print("Boss Liste konnte nicht entfernt werden !!")
-    if boss_message == "":
-      boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
-      self.oldBossMessage = ""
-    else:
-      self.oldBossMessage = boss_message
     id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
     self.bossid = id.message_id
     self.list_lists_ID.append(self.bossid)

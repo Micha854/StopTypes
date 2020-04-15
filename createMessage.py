@@ -221,7 +221,8 @@ class createMessage():
             boss_message += "\n\U00002514 Limit der Liste erreicht...\n"
           rb +=1
       i +=1
-      message_overview_boss = stop.Scliff + stop.Sarlo + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
+      if not rb == 0:
+        message_overview_boss = stop.Scliff + stop.Sarlo + stop.Ssierra + stop.Sgiovanni + "\n\n" + "<b>Aktuell " + str(rb) + " <a href='" + cfg.chatUrl +"/'>Rocket Boss Stops:</a></b> \n\n"
     return message_overview_boss + boss_message
 
   def list_lockmodul(self,send,sql,cfg,lm_types,rb_types,lm_limit,gmt):
