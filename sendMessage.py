@@ -39,10 +39,10 @@ class sendMessage():
     if typ in (lm_types):
       try:
         id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
-      except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
-        print ("Fehler beim senden von SingleStop ohne Ping")
-        time.sleep(5)
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=False)
+      except:
+        print(".................... wait 30 seconds, too many messages")
+        sleep = time.sleep(30)
+        return sleep
       self.list_lockmodul_output.append(name)
       self.list_lockmodul_message_ID.append(id.message_id)
       outF = open(self.areaName+self.areaNumber+"/lockmodul-output.txt","w")
@@ -50,11 +50,11 @@ class sendMessage():
       outF.close()
       return id.message_id
     try:
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
-    except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
-        print ("Fehler beim senden von SingleStop mit Ping")
-        time.sleep(5)
-        id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
+      id = self.bot.send_venue(self.singlechatID,latitude,longitude,bolt_line,name,disable_notification=True)
+    except:
+      print(".................... wait 30 seconds, too many messages")
+      sleep = time.sleep(30)
+      return sleep
     if typ in (rb_types):
       self.list_boss_output.append(name)
       self.list_boss_message_ID.append(id.message_id)
@@ -75,24 +75,22 @@ class sendMessage():
     #print("oldBoss: " + self.oldBossMessage)
     if self.oldBossMessage == boss_message:
       return self.bossid
-    if len(boss_message) > 5:
-      try:
-        id = self.bot.edit_message_text(boss_message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
-        self.oldBossMessage = boss_message
-        self.bossid = id.message_id
-        return self.bossid
-      except:
-        print("Konnte Boss Liste nicht editieren !!! ID: " + str(self.bossid))
+    if rb == 0:
+      boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
+      self.oldBossMessage = ""
+    else:
+      self.oldBossMessage = boss_message
+    try:
+      id = self.bot.edit_message_text(boss_message,chat_id=self.chatID, message_id=self.bossid, parse_mode='HTML',disable_web_page_preview=True)
+      self.bossid = id.message_id
+      return self.bossid
+    except:
+      print("Konnte Boss Liste nicht editieren !!! ID: " + str(self.bossid))
     try:
       self.bot.delete_message(self.chatID,self.bossid)
       self.list_lists_ID.remove(self.bossid)
     except:
       print("Boss Liste konnte nicht entfernt werden !!")
-    if boss_message == "":
-      boss_message = "Arlo, Cliff, Sierra und Giovanni gehen um 22 Uhr schlafen\nAb 6 Uhr machen Sie Deine Stadt wieder unsicher"
-      self.oldBossMessage = ""
-    else:
-      self.oldBossMessage = boss_message
     id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
     self.bossid = id.message_id
     self.list_lists_ID.append(self.bossid)
