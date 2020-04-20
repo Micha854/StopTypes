@@ -91,11 +91,16 @@ class sendMessage():
       self.list_lists_ID.remove(self.bossid)
     except:
       print("Boss Liste konnte nicht entfernt werden !!")
-    id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
-    self.bossid = id.message_id
-    self.list_lists_ID.append(self.bossid)
-    self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
-    return self.bossid
+    try:
+      id = self.bot.send_message(self.chatID,boss_message,parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
+      self.bossid = id.message_id
+      self.list_lists_ID.append(self.bossid)
+      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
+      return self.bossid
+    except:
+      print(".................... wait 30 seconds, too many messages")
+      sleep = time.sleep(30)
+      return sleep
 
   def sendOverview(self,message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter):
     print("rupel: " + str(rr))
@@ -122,15 +127,6 @@ class sendMessage():
         return message
       except:
         print("Konnte Rüpel Liste nicht editieren !!! ID: " + str(self.overviewid.message_id))
-        time.sleep(5)
-        try:
-          self.bot.edit_message_text(message,chat_id=self.chatID, message_id=self.overviewid.message_id, parse_mode='HTML',disable_web_page_preview=True)
-          self.oldoverviewMessage = message
-          self.newOverviewSend = 0
-          self.sendLockmodul(True,lockmodul_message)
-          return message
-        except:
-          print("2. Versuch die Rüpel Liste zu editieren ist gescheitert !!! ID: " + str(self.overviewid.message_id))
     try:
       self.bot.delete_message(self.chatID,self.overviewid.message_id)
       self.list_lists_ID.remove(self.overviewid.message_id)
@@ -139,19 +135,19 @@ class sendMessage():
     if message == "":
       message = "Aktuell keine Rockestops vorhanden"
       self.oldoverviewMessage = ""
+    else:
+      self.oldoverviewMessage = message
+    try:
       self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True)
       self.list_lists_ID.append(self.overviewid.message_id)
-      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID) 
+      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
       self.newOverviewSend = 1
+      self.sendLockmodul(False,lockmodul_message)
       return self.newOverviewSend
-    self.overviewid = self.bot.send_message(self.chatID, message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=True) 
-    self.list_lists_ID.append(self.overviewid.message_id)
-    self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
-
-    self.oldoverviewMessage = message
-    self.newOverviewSend = 1
-    self.sendLockmodul(False,lockmodul_message)
-    return self.newOverviewSend
+    except:
+      print(".................... wait 30 seconds, too many messages")
+      sleep = time.sleep(30)
+      return sleep    
 
   def sendLockmodul(self,bool,lockmodul_message):
     if self.oldLockmodulMessage == lockmodul_message and bool:
@@ -170,10 +166,15 @@ class sendMessage():
     except:
       print("\nLockmodul Liste konnte nicht entfernt werden !!")
     if len(lockmodul_message) > 5:
-      self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=False) 
-      self.list_lists_ID.append(self.lockmodulid.message_id)
-      self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
-      self.oldLockmodulMessage = lockmodul_message
+      try:
+        self.lockmodulid = self.bot.send_message(self.chatID, lockmodul_message, parse_mode='HTML',disable_web_page_preview=True,disable_notification=False) 
+        self.list_lists_ID.append(self.lockmodulid.message_id)
+        self.clearOldList(self.areaName, self.areaNumber, self.list_lists_ID)
+        self.oldLockmodulMessage = lockmodul_message
+      except:
+        print(".................... wait 30 seconds, too many messages")
+        sleep = time.sleep(30)
+        return sleep
 
   
   def clearOldList (self, areaName, areaNumber, list_lists_ID):
