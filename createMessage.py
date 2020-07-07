@@ -249,7 +249,7 @@ class createMessage():
         if cfg.singlechatId:
           linked = cfg.singlechatUrl + "/" + str(id)
         else:
-          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+          linked = "https://maps.google.de/?q=" + str(sql.Llatitude[i]) + ", " + str(sql.Llongitude[i])
 
         if lm < lm_limit:
           lockmodul_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
@@ -266,10 +266,10 @@ class createMessage():
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
         
         if cfg.singlechatId:
-          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+          id = send.singleStops(bolt_line,name,Llatitude,Llongitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
           linked = cfg.singlechatUrl + "/" + str(id)
         else:
-          linked = "https://maps.google.de/?q=" + str(sql.latitude[i]) + ", " + str(sql.longitude[i])
+          linked = "https://maps.google.de/?q=" + str(sql.Llatitude[i]) + ", " + str(sql.Llongitude[i])
 
         if lm < lm_limit:
           lockmodul_message += stop.Emoji + "<a href='" + linked + "'>" + str(stopName) + "</a>" + "\n\U00002514 <b>" + str(zeit.hour) + ":" + str(Help.nice_time(str(zeit.minute)))+ "</b> "  + stop.Infotext + "\n"
