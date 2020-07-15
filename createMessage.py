@@ -141,7 +141,7 @@ class createMessage():
     boss_message = self.list_boss(send,sql,cfg,rb_types,rb_limit,gmt)
     bossid = send.sendBoss(boss_message,rb)
 
-    if cfg.rocketStops == False and cfg.lureModule == True:
+    if cfg.lureModule == True:
       lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit,gmt)
       send.sendLockmodul(True,lockmodul_message)
 
@@ -170,8 +170,8 @@ class createMessage():
     if not rb == 0:
       message += "\n <a href='" + cfg.chatUrl +"/" + str(bossid) + "'>" + "<b>Hier gehts zu den Bossen</b></a>"
 
-    lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit,gmt)
     if cfg.rocketStops == True:
+      #lockmodul_message = self.list_lockmodul(send,sql,cfg,lm_types,rb_types,lm_limit,gmt)
       send.sendOverview(message_overview_rocket + message,rb,rr,old_rr,lockmodul_message,lm,timer,newMessageAfter)
 
 
@@ -258,15 +258,15 @@ class createMessage():
         lm+=1
         text_modul = "Modul:" if lm == 1 else "Module:"
       else:
-        latitude = sql.Llatitude[i]
-        longitude = sql.Llongitude[i]
+        latitude = sql.latitude[i]
+        longitude = sql.longitude[i]
         stop.getType(sql.Lincident_grunt_type[i])
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=gmt)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
         
         if cfg.singlechatId:
-          id = send.singleStops(bolt_line,name,Llatitude,Llongitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
           linked = cfg.singlechatUrl + "/" + str(id)
         else:
           linked = "https://maps.google.de/?q=" + str(sql.Llatitude[i]) + ", " + str(sql.Llongitude[i])

@@ -158,6 +158,14 @@ class stopType():
     self.Emoji = self.Ekaefer
     self.Infotext = self.Tkaefer
     return self.Emoji + self.Infotext
+  def typ10(self):
+    self.unlicht +=1
+    self.Eunlicht = "\U0001f311"
+    self.Sunlicht = self.Eunlicht + " " + str(self.unlicht) + " "
+    self.Tunlicht = "... Wo Licht ist, da ist auch Schatten"
+    self.Emoji = self.Eunlicht
+    self.Infotext = self.Tunlicht
+    return self.Emoji + self.Infotext
   def typ12(self):
     self.drache +=1
     self.Edrache = "\U0001f432"
@@ -294,14 +302,6 @@ class stopType():
     self.Emoji = self.Estahl
     self.Infotext = self.Tstahl
     return self.Emoji + self.Infotext
-  def typ99(self):
-    self.unlicht +=1
-    self.Eunlicht = "\U0001f311"
-    self.Sunlicht = self.Eunlicht + " " + str(self.unlicht) + " "
-    self.Tunlicht = "... Wo Licht ist, da ist auch Schatten"
-    self.Emoji = self.Eunlicht
-    self.Infotext = self.Tunlicht
-    return self.Emoji + self.Infotext
 
   ####Bosse
   def typ41(self):
@@ -373,9 +373,11 @@ class stopType():
 
   def getType(self,value):
     switch = {
+      None: self.undefine,
       4: self.typ4,
       5: self.typ5,
       7: self.typ7,
+      10:self.typ10,
       12:self.typ12,
       16:self.typ16,
       18:self.typ18,
@@ -393,7 +395,6 @@ class stopType():
       49:self.typ49,
       97:self.typ97,
       98:self.typ98,
-      99:self.typ99,
       41:self.typ41,
       42:self.typ42,
       43:self.typ43,
