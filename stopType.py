@@ -373,7 +373,6 @@ class stopType():
 
   def getType(self,value):
     switch = {
-      None: self.undefine,
       4: self.typ4,
       5: self.typ5,
       7: self.typ7,
