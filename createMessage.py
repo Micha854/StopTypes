@@ -258,15 +258,13 @@ class createMessage():
         lm+=1
         text_modul = "Modul:" if lm == 1 else "Module:"
       else:
-        latitude = sql.latitude[i]
-        longitude = sql.longitude[i]
         stop.getType(sql.Lincident_grunt_type[i])
         zeit = sql.Lincident_expiration[i]
         zeit = zeit + datetime.timedelta(hours=gmt)
         bolt_line = str(zeit.hour) +":" + str(Help.nice_time(str(zeit.minute))) + " " + stop.Emoji + stop.Infotext
         
         if cfg.singlechatId:
-          id = send.singleStops(bolt_line,name,latitude,longitude,sql.Lincident_grunt_type[i],lm_types,rb_types)
+          id = send.singleStops(bolt_line,name,sql.Llatitude[i],sql.Llongitude[i],sql.Lincident_grunt_type[i],lm_types,rb_types)
           linked = cfg.singlechatUrl + "/" + str(id)
         else:
           linked = "https://maps.google.de/?q=" + str(sql.Llatitude[i]) + ", " + str(sql.Llongitude[i])
